@@ -1,0 +1,159 @@
+.personal-flex-container {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  margin-top: 80px;
+}
+
+.personal-post {
+    width: 600px;
+    height: auto;
+    margin: 10px;
+    padding: 10px;
+}
+
+.create-post {
+    background-color: #FFF;
+    padding: 10px;
+}
+
+.users-post {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    /* border: 1px solid gray; */
+    width: 100%;
+    height: auto;
+    min-height: 600px;
+    margin: 20px auto;
+    text-align: center;
+    font-size: 18px;
+    font-weight: 500;
+}
+
+.form-personal {
+    width: 400px;
+    height: auto;
+    margin: 10px;
+    padding: 10px;
+}
+
+.personal {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    border-radius: 10px;
+    /* border: 1px solid gray; */
+    background-color: #FFF;
+    padding: 0;
+    margin: 0;
+    width: 100%;
+}
+
+.background {
+    border: none;
+    width: 100%;
+    height: 100px;
+    background-color: deepskyblue;
+}
+
+.img-personal-page {
+    border: 1px solid black;
+    height: 60px;
+    width: 60px;
+    border-radius: 50%;
+    margin: 20px auto;
+    overflow: hidden;
+    cursor: pointer;
+}
+
+.major {
+    font-size: 18px;
+    margin: 5px auto;
+    color: gray;
+}
+
+.upload {
+    width: 100%;
+}
+
+.upload-image {
+    border: none;
+    width: 95%;
+    border-radius: 50px;
+    font-size: 16px;
+    font-weight: 500;
+    padding: 5px;
+    margin: 10px;
+    background-color: #FFE53B;
+    background-image: linear-gradient(147deg, #FFE53B 0%, #FF2525 74%);
+    color: #FFF;
+}
+
+.form-post {
+    display: flex;
+}
+
+.form-post > * {
+    font-size: 1rem;
+    margin: 5px;
+    text-align: center;
+}
+
+.personal-hr {
+    width: 100%;
+    margin: 10px;
+}
+
+.add-social {
+    width: 100%;
+    justify-content: flex-start;
+}
+
+.bt-add-social {
+    border: none;
+    text-align: center;
+    justify-content: center;
+    border-radius: 50px;
+    font-size: 16px;
+    font-weight: 500;
+    padding: 10px;
+    margin: 10px;
+}
+
+.seen-my-profile {
+    width: 100%;
+}
+
+.bt-profile {
+    border: none;
+    width: 95%;
+    border-radius: 50px;
+    font-size: 16px;
+    font-weight: 500;
+    padding: 5px;
+    margin: 10px;
+    background-color: #0093E9;
+    background-image: linear-gradient(160deg, #0093E9 0%, #80D0C7 100%);
+    color: #FFF;
+    cursor: pointer;
+}
+
+.personal-setting {
+    width: 100%;
+    text-align: right;
+}
+
+.bt-setting {
+    border: none;
+    text-align: center;
+    justify-content: center;
+    border-radius: 50px;
+    font-size: 16px;
+    font-weight: 500;
+    padding: 10px;
+    margin: 10px;
+    cursor: pointer;
+}

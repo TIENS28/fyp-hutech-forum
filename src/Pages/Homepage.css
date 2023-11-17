@@ -1,0 +1,114 @@
+.home-flex-container {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    height: auto;
+    margin-top: 70px; 
+}
+
+.home-flex-container > div {
+    background-color: #FFF;
+    width: 600px;
+    height: auto;
+    margin: 10px;
+    padding: 10px;
+    font-size: 18px;
+    align-self: center;
+}
+
+.create-post {
+    display: flex;
+}
+
+.create-post > * {
+    margin: auto 5px;
+}
+
+.homepage-personal-page {
+    border: 1px solid black;
+    height: 30px;
+    width: 30px;
+    border-radius: 50%;
+    overflow: hidden;
+    cursor: pointer;
+}
+
+.home-create-post {
+    border: 2px solid #FFF;
+    border-radius: 10px;
+    text-align: left;
+    width: 100%;
+    padding: 10px;
+    font-size: 16px;
+    color: gray;
+}
+
+.home-create-post:hover {
+    border: 1px solid #1877f2;
+}
+
+.home-post {
+    padding: 10px;
+    border-radius: 10px;
+}
+
+.home-user {
+    margin: auto 5px;
+}
+
+.user-date {
+    margin: auto 10px;
+}
+
+.home-post-title {
+    font-size: 2rem;
+}
+
+.home-post-content {
+    color: gray;
+    line-height: 1.5;
+    font-size: 16px;
+    margin: 5px auto;
+}
+
+.home-interactions {
+    margin: 10px auto;
+}
+
+.number-interaction {
+    color: deeppink;
+    font-size: 18px;
+}
+
+.numbers-interaction {
+    font-size: 18px;
+    color: gray;
+    margin-left: 5px;
+}
+
+.numbers-comments-interaction {
+    color: gray;
+    font-size: 18px;
+    float: right;
+}
+
+.home-hr {
+    border: none;
+    background-color: gray;
+    height: 1px;
+    margin-bottom: 10px;
+}
+
+.interaction {
+    display: flex;
+    justify-content: space-between; 
+    margin: 0 40px; 
+    align-items: center;
+    font-size: 18px;
+}
+
+.home-img-post {
+    width: 100%;
+    height: 400px;
+    background-color: #F1F1F1;
+}

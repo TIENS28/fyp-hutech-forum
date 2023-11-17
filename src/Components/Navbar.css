@@ -1,0 +1,60 @@
+.navbar {
+    display: flex;
+    justify-content: space-between; 
+    align-items: center;
+    text-align: center;
+    background-color: #FFF;
+    width: 100%;
+    height: 70px;
+    top:0;
+    position: fixed;
+}
+
+.navbar > div {
+    display: flex;
+    align-items: center;
+    text-align: center;
+    margin: 10px;
+}
+
+.navbar-left {
+    margin-right: auto; 
+}
+  
+.navbar-center {
+    margin: 0 auto; 
+}
+  
+.navbar-right {
+    margin-left: auto;
+}
+
+.navbar-left {
+    margin: 10px 0;
+}
+
+.img-logoHUTECH {
+    border-radius: 50%;
+    margin-right: 10px;
+    width: 60px;
+    height: 60px;
+}
+
+.h1-HUTECH {
+    color: blue;
+}
+
+.h1-HUTECH {
+    cursor: pointer;
+}
+
+.search {
+    border: none;
+    background-color: #F1F1F1;
+    width: 500px;
+    height: 30px;
+    border-radius: 50px;
+    padding: 20px;
+    margin: 0 auto;
+    font-size: 21px;
+}
