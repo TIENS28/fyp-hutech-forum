@@ -1,5 +1,6 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { useNavigate } from 'react-router-dom'
+import axios from 'axios';
 import './Homepage.css';
 
 import { FaRegComments }   from "react-icons/fa";
@@ -10,6 +11,18 @@ import { AiFillHeart } from "react-icons/ai";
 
 function Homepage({ setIsNavbarVisible }) {
 
+  //Call API
+  useEffect(() => {
+    axios.get('http://localhost:8089/post-api')
+      .then(response => {
+        console.log(response.data);
+      })
+      .catch(error => {
+        console.error('Error fetching data from API:', error);
+      });
+  }, []);
+
+  //ReactJS
     setIsNavbarVisible(true);
     const navigate = useNavigate();
 

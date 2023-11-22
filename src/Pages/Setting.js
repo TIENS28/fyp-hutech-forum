@@ -1,5 +1,6 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import { useNavigate } from 'react-router-dom'
+import axios from 'axios';
 import './Setting.css';
 
 import { MdEdit } from "react-icons/md";
@@ -12,7 +13,18 @@ import { FaStar } from "react-icons/fa";
 import Switch from '@mui/material/Switch';
 
 function Setting() {
+    // Call API
+    useEffect(() => {
+        axios.get('http://localhost:8089/user-api')
+          .then(response => {
+            console.log(response.data);
+          })
+          .catch(error => {
+            console.error('Error fetching data from API:', error);
+          });
+      }, []);
 
+    // ReactJS 
     const [toggle, setToggle] = useState(1);
     const label = { inputProps: { 'aria-label': 'Switch demo' } };
     const navigate = useNavigate();
