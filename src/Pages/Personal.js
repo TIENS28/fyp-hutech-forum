@@ -72,7 +72,7 @@ function Personal() {
                 </div>
 
                 <div className='personal-informations'>
-                    <p><h2>Tran Nguyen Tien</h2></p>
+                    <h2>Tran Nguyen Tien</h2>
                 </div>
 
                 <div>

@@ -41,7 +41,7 @@ function PersonalPage() {
                 </div>
 
                 <div className='personal-informations'>
-                    <p><h2>Nguyen Trang Chi Kiem</h2></p>
+                    <h2>Nguyen Trang Chi Kiem</h2>
                 </div>
 
                 <div>
