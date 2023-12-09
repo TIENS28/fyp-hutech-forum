@@ -1,17 +1,20 @@
 .home-flex-container {
+    /* border: 1px solid black; */
     display: flex;
     flex-direction: column;
     justify-content: center;
+    width: auto;
     height: auto;
     margin-top: 70px; 
 }
 
 .home-flex-container > div {
     background-color: #FFF;
+    border-radius: 10px;
     width: 600px;
     height: auto;
     margin: 10px;
-    padding: 10px;
+    padding: 5px 10px;
     font-size: 18px;
     align-self: center;
 }
@@ -50,6 +53,51 @@
 .home-post {
     padding: 10px;
     border-radius: 10px;
+}
+
+.flex-container-home-user {
+    display: flex;
+    /* justify-content: space-between; Thêm dòng này để đẩy các phần tử về hai bên */
+    align-items: center;
+}
+
+.flex-container-home-user > div {
+    margin: 10px;
+}
+
+.home-user {
+    display: flex;
+    align-items: center;
+}
+
+.user-date {
+    margin: auto 10px;
+}
+
+.fa-ellipsis-h {
+    margin-left: auto;
+}
+
+.img-home-user {
+    width: 20px;
+    height: auto;
+}
+
+.user-home-user {
+    width: 500px;
+    height: auto;
+    padding: auto 10px;
+}
+
+.item-home-user {
+    width: 20px;
+    margin-left: auto; /* Di chuyển về bên phải */
+    margin-right: 10px; /* Khoảng cách bên phải */
+    padding-right: 10px; /* Padding bên phải */
+}
+
+.item-home-user:hover {
+    cursor: pointer;
 }
 
 .home-user {
@@ -111,4 +159,24 @@
     width: 100%;
     height: 400px;
     background-color: #F1F1F1;
+}
+
+.FaHeart:hover {
+    cursor: pointer;
+    scale: 1.2;
+}
+
+.FaRegComments {
+    cursor: pointer;
+}
+
+.FaRegStar:hover {
+    cursor: pointer;
+    rotate: 90deg;
+}
+
+.modal {
+    z-index: 100000;
+    width: auto;
+    height: auto;
 }

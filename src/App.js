@@ -2,17 +2,16 @@ import React, { useState } from 'react';
 import {BrowserRouter as Router, Routes, Route, Navigate} from 'react-router-dom'
 import './App.css';
 
-
-import Navbar from './Components/Navbar';
-import Login from './Pages/Login';
-import Homepage from './Pages/Homepage';
-import CreatePost from './Pages/CreatePost';
-import PersonalPage from './Pages/PersonalPage';
-import Personal from './Pages/Personal';
-import Setting from './Pages/Setting';
-import Save from './Pages/Save';
+import Navbar from         './Components/Navbar';
+import Login from          './Pages/Login';
+import Homepage from       './Pages/Homepage';
+import CreatePost from     './Pages/CreatePost';
+import PersonalPage from   './Pages/PersonalPage';
+import Personal from       './Pages/Personal';
+import Setting from        './Pages/Setting';
+import Save from           './Pages/Save';
 import ForgotPassword from './Pages/ForgotPassword';
-import CreateAccount from './Pages/CreateAccount';
+import CreateAccount from  './Pages/CreateAccount';
 
 function App() {
 

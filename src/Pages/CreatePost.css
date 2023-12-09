@@ -9,7 +9,7 @@
 }
 
 .post-flex-container > * {
-    width: 60%;
+    width: 100%;
     height: auto;
     align-self: flex-start;
 }
@@ -26,6 +26,17 @@
     background-color: #FFF;
 }
 
+.ckeditor {
+    width: 100%; 
+    height: auto; 
+    z-index: 10;
+}
+
+.ckeditor ol, .ckeditor ul {
+    margin-left: 0;
+    padding-left: 40px; 
+}
+
 .create-posts {
     display: flex;
     flex-direction: column;
@@ -33,32 +44,10 @@
     background-color: #FFF;
 }
 
-.input-title {
-    border: 2px solid #f1f1f1;
-    border-radius: 5px;
-    background: white;
-    padding: 10px;
-    margin: 10px;
-    font-size: 1rem;
-    width: 95%;
-}
-
-.input-content {
-    border: 2px solid #f1f1f1;
-    border-radius: 5px;
-    background: white;
-    padding: 10px;
-    margin: 10px;
-    font-size: 1rem;
-    line-height: 1.5;
-    width: 95%;
-    height: 100px;
-}
-
 .create-post-upload-image {
     display: flex;
-    border: 2px solid #f1f1f1;
-    height: 200px;
+    /* border: 2px solid #f1f1f1; */
+    height: auto;
     margin: 10px;
     padding: 10px;
     font-size: 18px;

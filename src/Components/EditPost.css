@@ -1,0 +1,42 @@
+.modalEditPostBackground {
+    /* border: 1px solid black; */
+    width: 100%;
+    height: 100vh;
+    background-color: rgba(200, 200, 200, 0.5); /* Mờ nền với opacity: 0.5 */
+    position:fixed;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin: 0;
+}
+
+.modalEditPostContent {
+    width: 500px;
+    height: auto;
+    border-radius: 12px;
+    background-color: white; /* Nền rõ ràng */
+    opacity: 1;
+    box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
+    display: flex;
+    flex-direction: column;
+    padding: 10px 0;
+}
+
+.modalEditPostContent > div {
+    margin: 0;
+    font-size: 1rem;
+    text-align: center;
+    padding: 10px 0;
+    cursor: pointer;
+}
+
+.hrEditPost {
+    border: none;
+    background-color: Silver;
+    width: 100%;
+    padding: 0.5px;
+}
+
+.postCancel {
+    color: red;
+}
