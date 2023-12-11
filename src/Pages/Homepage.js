@@ -1,30 +1,38 @@
 import React, { useState, useEffect } from 'react';
-import { useNavigate, useLocation } from 'react-router-dom'
-//import axios from 'axios';
+import { useNavigate, useLocation } from 'react-router-dom';
 import './Homepage.css';
 
-import { FaEllipsisH } from "react-icons/fa";
-import { FaRegComments }   from "react-icons/fa";
-import { FaHeart } from "react-icons/fa";
-import { FaRegStar }       from "react-icons/fa";
-import { AiFillHeart } from "react-icons/ai";
+import { FaEllipsisH } from 'react-icons/fa';
+import { FaRegComments } from 'react-icons/fa';
+import { FaHeart } from 'react-icons/fa';
+import { FaRegStar } from 'react-icons/fa';
+import { AiFillHeart } from 'react-icons/ai';
 
 import EditPost from '../Components/EditPost';
 import Comment from '../Components/Comment';
 
 function Homepage({ setIsNavbarVisible }) {
-
-  setIsNavbarVisible(true);
   const navigate = useNavigate();
 
+  useEffect(() => {
+    setIsNavbarVisible(true);
+    return () => {
+      // Cleanup function to reset navbar visibility when the component unmounts
+      setIsNavbarVisible(false);
+    };
+  }, [setIsNavbarVisible]);
+  
   const location = useLocation();
   const { editorData, uploadedImage } = location.state || {};
-  console.log({ editorData, uploadedImage });
   const hasPostData = editorData || uploadedImage;
 
-  const [isLiked, setIsLiked] = useState(false);
-  const handleClick = () => {
-    setIsLiked(!isLiked);
+  const [likedStates, setLikedStates] = useState({});
+
+  const handleClick = (postId) => {
+    setLikedStates((prevStates) => ({
+      ...prevStates,
+      [postId]: !prevStates[postId],
+    }));
   };
 
   const [openModal, setOpenModal] = useState(false);
@@ -32,7 +40,7 @@ function Homepage({ setIsNavbarVisible }) {
     if (openModal) {
       document.body.style.overflow = 'hidden';
     } else {
-      document.body.style.overflow = 'auto'; 
+      document.body.style.overflow = 'auto';
     }
     return () => {
       document.body.style.overflow = 'auto';
@@ -44,31 +52,19 @@ function Homepage({ setIsNavbarVisible }) {
     if (openComment) {
       document.body.style.overflow = 'hidden';
     } else {
-      document.body.style.overflow = 'auto'; 
+      document.body.style.overflow = 'auto';
     }
     return () => {
       document.body.style.overflow = 'auto';
     };
   }, [openComment]);
 
-  //Call API
-  // useEffect(() => {
-  //   axios.get('http://localhost:8089/post-api')
-  //     .then(response => {
-  //       console.log(response.data);
-  //     })
-  //     .catch(error => {
-  //       console.error('Error fetching data from API:', error);
-  //     });
-  // }, []);
-
-  //ReactJS
 
   return (
-  <>
-    {openModal && <EditPost closeModal={setOpenModal}/>}
-    {openComment && <Comment closeComment={setOpenComment}/>}
-    <div className ='home-flex-container'>
+    <>
+      {openModal && <EditPost closeModal={setOpenModal} />}
+      {openComment && <Comment closeComment={setOpenComment} />}
+      <div className="home-flex-container">
       <div className='create-post'>
         <img onClick={()=>{navigate('/personal', {replace:true})}}
              className='homepage-personal-page'
@@ -106,8 +102,8 @@ function Homepage({ setIsNavbarVisible }) {
       )}
 
       <div className="editor-content">
-        {hasPostData && (
-      <div className="editor-content">
+          {hasPostData && (
+            <div className="editor-content">
         <div dangerouslySetInnerHTML={{ __html: editorData }} />
         {uploadedImage && <img src={uploadedImage} alt="Uploaded" style={{ width: '600px', height: '400px' }}/>}
         <div className="home-interactions">
@@ -119,12 +115,13 @@ function Homepage({ setIsNavbarVisible }) {
           <hr className="home-hr" />
         </div>
         <div className="interaction">
-        <FaHeart className='FaHeart' 
-          onClick={handleClick}
-          style={{ color: isLiked ? 'DeepPink' : 'Black' }}/>
-          <FaRegComments className='FaRegComments'
-                         onClick={() => {setOpenComment(true)}}/>
-          <FaRegStar className='FaRegStar'/>
+                <FaHeart
+                  className="FaHeart"
+                  onClick={() => handleClick('post1')}
+                  style={{ color: likedStates['post1'] ? 'DeepPink' : 'Black' }}
+                />
+                <FaRegComments className="FaRegComments" onClick={() => setOpenComment(true)} />
+                <FaRegStar className="FaRegStar" />
         </div>
       </div>
      )}
@@ -153,13 +150,15 @@ function Homepage({ setIsNavbarVisible }) {
         <span className='numbers-comments-interaction'>5 Commnets</span>
       </div>
       <div><hr className='home-hr'/></div>
-      <div className='interaction'>
-        <FaHeart className='FaHeart' 
-          onClick={handleClick}
-          style={{ color: isLiked ? 'DeepPink' : 'Black' }}/>
-          <FaRegComments className='FaRegComments'/>
-          <FaRegStar className='FaRegStar'/>
-      </div>
+        <div className="interaction">
+            <FaHeart
+              className="FaHeart"
+              onClick={() => handleClick('post2')}
+              style={{ color: likedStates['post2'] ? 'DeepPink' : 'Black' }}
+            />
+            <FaRegComments className="FaRegComments" />
+            <FaRegStar className="FaRegStar" />
+        </div>
       </div>
     </div>
   </>

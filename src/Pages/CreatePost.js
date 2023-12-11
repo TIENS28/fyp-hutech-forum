@@ -1,84 +1,116 @@
-import React, { useState } from 'react';  //import React, { useState } from 'react';
-import { useNavigate } from 'react-router-dom'
-
+import React, { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { CKEditor } from '@ckeditor/ckeditor5-react';
 import ClassicEditor from '@ckeditor/ckeditor5-build-classic';
-
 import './CreatePost.css';
 import Upload from '../Components/Upload';
+import { useUser } from '../Components/UserContext';
 
-function CreatePost () {
+function CreatePost() {
+  const [title, setTitle] = useState('');
+  const [description, setDescription] = useState('');
+  const [content, setContent] = useState('');
+  const [uploadedImage, setUploadedImage] = useState(null);
+  const [error, setError] = useState(null);
+  const { user } = useUser();
+  const navigate = useNavigate();
 
-    const [editorData, setEditorData] = useState("<p>Please input your post content here!</p>");
-    const [uploadedImage, setUploadedImage] = useState(null);
-    const navigate = useNavigate();
+  const handlePostSubmit = async () => {
+    try {
+      const response = await fetch('http://localhost:5001/api/auth/posts/newPost', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          title: title,
+          description: description,
+          content: content,
+          thumbnail: "Thumbnail",
+          user: {
+            id: user.id,
+            firstName: user.firstName,
+            lastName: user.lastName,
+            fullName: user.fullName,
+          },
+        }),
+      });
+
+    if (!response.ok) {
+      throw new Error('Failed to save post');
+    }
+
+    const result = await response.json();
+    console.log('Post saved successfully:', result);
+    navigate('/homepage', { replace: true });
+  } catch (error) {
+    console.error('Error saving post:', error.message);
+    setError('Failed to save post. Please try again.');
+  }
+};
 
   return (
     <div className="post-flex-container">
-        <h1 className='post-h1' >Create a post</h1>
-        <hr className='post-hr'/>
-        <div className ='ckeditor'>
-        <CKEditor 
-                    editor={ClassicEditor}
-                    data={editorData}
-                    // data="<p>Please input your post content here!</p>"
-                    onReady={editor => {
-                        // You can store the "editor" and use when it is needed.
-                        console.log('Editor is ready to use!', editor);
-                    }}
-                    onChange={(event, editor) => {
-                        const data = editor.getData();
-                        setEditorData(data);
-                      }}
-                    // onChange={(event, editor) => {
-                    //     const data = editor.getData();
-                    //     console.log({ event, editor, data });
-                    // }}
-                    onBlur={(event, editor) => {
-                        console.log('Blur.', editor);
-                    }}
-                    onFocus={(event, editor) => {
-                        console.log('Focus.', editor);
-                    }}
-                    config={{
-                        toolbar: [
-                            'heading',
-                            '|',
-                            'bold',
-                            'italic',
-                            '|',
-                            // 'bulletedList',
-                            // 'numberedList',
-                            '|',
-                            'link',
-                            'undo',
-                            'redo',
-                        ],
-                    }}
-                />
-        </div>
-        
-        <div className='create-posts'>
-            <div className='create-post-upload-image'>
-                <Upload onImageUpload={(image) => setUploadedImage(image)}/>
-            </div>
-            
-            <hr className='post-hrs'/>
-            <div className='button-post'>
-                <button className='bt-post-cancel'
-                        onClick={()=>{navigate('/homepage', {replace:true})}}>Cancle</button>
-                <button
-                    className='bt-post'
-                    onClick={() => {
-                        console.log({ editorData, uploadedImage });
-                    navigate('/homepage', { replace: true, state: { editorData, uploadedImage } });
-                    }}
-                    >Post</button>
-                {/* <button className='bt-post'
-                onClick={()=>{navigate('/homepage', {replace:true})}}>Post</button> */}
-            </div>
+      <h1 className="post-h1">Create a post</h1>
+      <hr className="post-hr" />
+
+      <div className="create-post-section">
+        <label className="create-post-label">Title:</label>
+        <input
+          className="create-post-input"
+          type="text"
+          value={title}
+          onChange={(e) => setTitle(e.target.value)}
+        />
+      </div>
+
+      <div className="create-post-section">
+        <label className="create-post-label">Description:</label>
+        <input
+          className="create-post-input"
+          type="text"
+          value={description}
+          onChange={(e) => setDescription(e.target.value)}
+        />
+      </div>
+
+      <div className="ckeditor">
+        <CKEditor
+          editor={ClassicEditor}
+          data={content}
+          onChange={(event, editor) => {
+            const data = editor.getData();
+            setContent(data);
+          }}
+          config={{
+            toolbar: ['heading', '|', 'bold', 'italic', '|', 'link', 'undo', 'redo'],
+          }}
+        />
+      </div>
+
+      <div className="create-posts">
+        <div className="create-post-upload-image">
+          <Upload onImageUpload={(image) => setUploadedImage(image)} />
         </div>
 
+        <hr className="post-hrs" />
+
+        <div className="button-post">
+          <button
+            className="bt-post-cancel"
+            onClick={() => {
+              navigate('/homepage', { replace: true });
+            }}
+          >
+            Cancel
+          </button>
+          <button className="bt-post" onClick={handlePostSubmit}>
+            Post
+          </button>
+        </div>
+
+        {error && <p className="error-message">{error}</p>}
+      </div>
     </div>
   );
 }
