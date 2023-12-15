@@ -1,12 +1,13 @@
 import React, { useState } from 'react';
-import { Link } from 'react-router-dom';
 import './CreateAccount.css';
+import { Link, useHistory, NavLink } from 'react-router-dom';
 
 function CreateAccount() {
   const [firstName, setFirstName] = useState('');
   const [lastName, setLastName] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const [status, setStatus] = useState(null); // null: not submitted, true: success, false: error
 
   const handleSubmit = async (event) => {
     event.preventDefault();
@@ -28,14 +29,13 @@ function CreateAccount() {
       });
 
       if (response.ok) {
-        // Handle success, e.g., redirect to login page
-        console.log('Account created successfully!');
+        setStatus(true); // Success
       } else {
-        // Handle error, e.g., display an error message
-        console.error('Failed to create account');
+        setStatus(false); // Error
       }
     } catch (error) {
       console.error('Error during API call:', error);
+      setStatus(false); // Error
     }
   };
 
@@ -78,15 +78,23 @@ function CreateAccount() {
             Submit
           </button>
         </form>
+        {status !== null && (
+          <div className={status ? 'success-message' : 'error-message'}>
+            {status ? 'Account created successfully!  '  : 'Failed to create account. Email is already bound to another account  '}
+            <NavLink className='forgot-password' to='/login'>
+                 Login
+            </NavLink>
+          </div>
+        )}
       </div>
 
       <div className='forms-create-account'>
         <p className='login-create-account'>
-          Do you have an account ?
+          Do you have an account?
           <span>
-            <Link className='forgot-password' to='/login'>
+            <NavLink className='forgot-password' to='/login'>
               Login
-            </Link>
+            </NavLink>
           </span>
         </p>
       </div>

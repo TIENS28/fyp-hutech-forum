@@ -26,10 +26,12 @@
     background-color: #FFF;
 }
 
-.ckeditor {
+.ckeditor
+.ck-editor__editable {
     width: 100%; 
     height: auto; 
     z-index: 10;
+    direction: ltr;
 }
 
 .ckeditor ol, .ckeditor ul {
