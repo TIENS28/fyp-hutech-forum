@@ -1,7 +1,7 @@
 import React, {useState} from 'react';
 import { Link } from 'react-router-dom'
 import './Dropdown.css';
-
+import { useUser } from '../Components/UserContext';
 import { FaChevronDown } from "react-icons/fa";
 import { FaRegUserCircle } from "react-icons/fa";
 import { FaRegEdit } from "react-icons/fa";
@@ -11,7 +11,8 @@ import { AiOutlineFileExclamation } from "react-icons/ai";
 import { FaSignOutAlt }    from "react-icons/fa";
 
 function Dropdown() {
-
+  const { user } = useUser();
+  console.log('User Data:', user);
     const [open, setOpen] = useState(false)
 
   return (
@@ -52,7 +53,7 @@ function Dropdown() {
       </div>
 
       <div className='user' onClick={()=>{setOpen(!open)}}>
-        <span>Nguyen Trang Chi Kiem<span className='item-dropdown'><FaChevronDown/></span></span>
+        <span>{user.fullName}<span className='item-dropdown'><FaChevronDown/></span></span>
       </div>
     </div>
   </div>

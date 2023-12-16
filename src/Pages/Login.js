@@ -19,7 +19,6 @@ function Login() {
       const success = await login(email, password);
   
       if (success) {
-        // Replace {email} with the actual email value
         const userResponse = await fetch(`http://localhost:5001/api/auth/users/user/${email}`, {
           method: 'GET',
           headers: {

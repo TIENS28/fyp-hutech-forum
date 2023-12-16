@@ -180,3 +180,9 @@
     width: auto;
     height: auto;
 }
+
+.distance {
+    width: auto;
+    height: 10px;
+    background-color: #1877f2;
+}

@@ -1,6 +1,25 @@
+// import React from 'react';
+// import { useUser } from '../Components/UserContext';
+
+// function UserProfile() {
+//   const { user } = useUser();
+//   console.log('User Data:', user);
+
+//   return (
+//     <div>
+//       <h2>User Profile</h2>
+//       {user.fullName && <p>Full Name: {user.fullName}</p>}
+//       {user.email && <p>Email: {user.email}</p>}
+//     </div>
+//   );
+// }
+
+// export default UserProfile;
+
 import React, { useState, useEffect } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom'
 import { useUser } from '../Components/UserContext';
+import './PersonalPage.css'; 
 
 import { MdOutlinePostAdd } from "react-icons/md";
 import { IoPersonAddOutline } from "react-icons/io5";
@@ -17,11 +36,10 @@ import { FaEllipsisH } from "react-icons/fa";
 import EditPost from '../Components/EditPost';
 import Comment from '../Components/Comment';
 
-function UserProfile({closeComment}) {
+function PersonalPage({closeComment}) {
   const { user } = useUser();
   console.log('User Data:', user);
-
-  const navigate = useNavigate();
+    const navigate = useNavigate();
 
     const location = useLocation();
     const { editorData, uploadedImage } = location.state || {};
@@ -61,11 +79,6 @@ function UserProfile({closeComment}) {
     <>
     {openModal && <EditPost closeModal={setOpenModal}/>}
     {openComment && <Comment closeComment={setOpenComment}/>}
-    <div>
-      <h2>User Profile</h2>
-      {user.fullName && <p>Full Name: {user.fullName}</p>}
-      {user.email && <p>Email: {user.email}</p>}
-    </div>
     <div className="personal-flex-container">
         <div className='personal-post'>
             <div className='create-post'>
@@ -93,9 +106,10 @@ function UserProfile({closeComment}) {
             />
           </div>
           <div className="user-home-user">
-            <span className="user-date">NGUYEN TRANG CHI KIEM </span>
+            <span className="user-date">{user.fullName}</span>
             <br />
-            <span className="user-date">Date: 7/10/2023 </span>
+            <span className="user-email">{user.email}</span>
+            
           </div>
           <div className="item-home-user">
             <FaEllipsisH className="fa-ellipsis-h"
@@ -129,7 +143,6 @@ function UserProfile({closeComment}) {
      )}
       </div>
      </div>
-                {/* <p className='user-post'>Nguyen Trang Chi Kiem hasn't posted anything</p> */}
              </div>
         </div>
 
@@ -138,29 +151,23 @@ function UserProfile({closeComment}) {
                 <div className='background'></div>
 
                 <div className='personal-informations'>
-                    <img className='img-personal-page'
-                         src="Yone.jpg" 
-                         alt="Avatar"></img>
+                    Fullname: {user.fullName}
                 </div>
-
                 <div className='personal-informations'>
-                    <h2>Nguyen Trang Chi Kiem</h2>
+                    Email: {user.email}
                 </div>
-
-                <div>
-                    <p className='major'>Information Technology</p>
+                <div className='personal-informations'>
+                    DOB: {user.dob}
                 </div>
-
+                <div className='personal-informations'>
+                    Department: {user.department}
+                </div>
+                <div className='personal-informations'>
+                    Student ID: {user.studentID}
+                </div>
                 <div className='upload'>
                     <button className='upload-image'>Upload Image</button>
                 </div>
-
-                <div className='form-post'>
-                    <div><MdOutlinePostAdd /><span style={{ marginLeft: '5px' }}>Posts</span><br/><span>0</span></div>
-                    <div><IoPersonAddOutline /><span style={{ marginLeft: '5px' }}>Followers</span><br/><span>1</span></div>
-                    <div><SlUserFollowing /><span style={{ marginLeft: '5px' }}>Following</span><br/><span>1</span></div>
-                </div>
-
                 <div className='add-social'>
                     <button className='bt-add-social'><FaPlus style={{ marginRight: '5px' }}/> Add social link </button>
                 </div>
@@ -181,4 +188,4 @@ function UserProfile({closeComment}) {
   );
 }
 
-export default UserProfile;
+export default PersonalPage;

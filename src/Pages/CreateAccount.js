@@ -1,26 +1,28 @@
 import React, { useState } from 'react';
-import { Link } from 'react-router-dom';
 import './CreateAccount.css';
-import Upload from '../Components/Upload';
-import { FaCheck } from "react-icons/fa";
+import { Link, useHistory, NavLink } from 'react-router-dom';
 
 function CreateAccount() {
   const [firstName, setFirstName] = useState('');
   const [lastName, setLastName] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const [dob, setDOB] = useState('');
+  const [department, setDepartment] = useState('');
+  const [studentID, setStudentID] = useState('')
+  const [status, setStatus] = useState(null); // null: not submitted, true: success, false: error
 
   const handleSubmit = async (event) => {
     event.preventDefault();
-    setSubmitted(true);
-           // You can use the uploadedImage state as needed after submission
-           console.log('Uploaded Image:', uploadedImage);
 
     const data = {
       firstName,
       lastName,
       email,
       password,
+      dob,
+      department,
+      studentID,
     };
 
     try {
@@ -33,35 +35,18 @@ function CreateAccount() {
       });
 
       if (response.ok) {
-        // Handle success, e.g., redirect to login page
-        console.log('Account created successfully!');
+        setStatus(true); // Success
       } else {
-        // Handle error, e.g., display an error message
-        console.error('Failed to create account');
+        setStatus(false); // Error
       }
     } catch (error) {
       console.error('Error during API call:', error);
+      setStatus(false); // Error
     }
   };
-// Upload Image
-      const [isSubmitted, setSubmitted] = useState(false);
-      const [uploadedImage, setUploadedImage] = useState(null);
-
-      const handleImageUpload = (imageURL) => {
-        setUploadedImage(imageURL);
-      };
 
   return (
     <div className='create-account-flex-container'>
-      {isSubmitted ? (
-        <div className='form-create-account'>
-          <h4 className='download-image-user'>Download your profile picture here</h4>
-          <div>
-              <Upload onImageUpload={handleImageUpload} />
-              <button className='bt-finish-create-account'>Finished <FaCheck className='FaCheck ' /></button>
-          </div>
-        </div>
-      ) : (
       <div className='form-create-account'>
         <h4>Don't have an account yet ?</h4>
         <hr className='hr-create-account' />
@@ -95,20 +80,48 @@ function CreateAccount() {
             value={password}
             onChange={(e) => setPassword(e.target.value)}
           />
+          <input
+            className='input-create-account'
+            type="date"
+            placeholder="Enter DOB"
+            value={dob}
+            onChange={(e) => setDOB(e.target.value)}
+          />
+          <input
+            className='input-create-account'
+            type="text"
+            placeholder="Enter Department"
+            value={department}
+            onChange={(e) => setDepartment(e.target.value)}
+          />
+          <input
+            className='input-create-account'
+            type="number"
+            placeholder="Enter StudentID"
+            value={studentID}
+            onChange={(e) => setStudentID(e.target.value)}
+          />
           <button type="submit" className='bt-submit-create-account'>
             Submit
           </button>
         </form>
+        {status !== null && (
+          <div className={status ? 'success-message' : 'error-message'}>
+            {status ? 'Account created successfully!  '  : 'Failed to create account. Email is already bound to another account  '}
+            <NavLink className='forgot-password' to='/login'>
+                 Login
+            </NavLink>
+          </div>
+        )}
       </div>
-      )}
 
       <div className='forms-create-account'>
         <p className='login-create-account'>
-          Do you have an account ?
+          Do you have an account?
           <span>
-            <Link className='forgot-password' to='/login'>
+            <NavLink className='forgot-password' to='/login'>
               Login
-            </Link>
+            </NavLink>
           </span>
         </p>
       </div>
