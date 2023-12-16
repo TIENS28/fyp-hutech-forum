@@ -19,6 +19,10 @@
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Hiệu ứng bóng */
 }
 
+.download-image-user {
+    padding: 10px;
+}
+
 .hr-create-account {
     border: none;
     height: 1px;
@@ -63,4 +67,22 @@
 .login-create-account {
     margin: 10px auto;
     text-align: center;
+}
+
+.bt-finish-create-account {
+    border: none;
+    border-radius: 7px;
+    width: 100%;
+    font-size: 18px;
+    background-color: #1877f2;
+    color: #FFF;
+    padding: 10px;
+    margin: 10px auto;
+    align-items: center;
+}
+
+.bt-finish-create-account:hover {
+    cursor: pointer;
+    Color: black;
+    background-color: Lime;
 }

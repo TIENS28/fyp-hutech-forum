@@ -1,6 +1,8 @@
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import './CreateAccount.css';
+import Upload from '../Components/Upload';
+import { FaCheck } from "react-icons/fa";
 
 function CreateAccount() {
   const [firstName, setFirstName] = useState('');
@@ -10,6 +12,9 @@ function CreateAccount() {
 
   const handleSubmit = async (event) => {
     event.preventDefault();
+    setSubmitted(true);
+           // You can use the uploadedImage state as needed after submission
+           console.log('Uploaded Image:', uploadedImage);
 
     const data = {
       firstName,
@@ -38,9 +43,25 @@ function CreateAccount() {
       console.error('Error during API call:', error);
     }
   };
+// Upload Image
+      const [isSubmitted, setSubmitted] = useState(false);
+      const [uploadedImage, setUploadedImage] = useState(null);
+
+      const handleImageUpload = (imageURL) => {
+        setUploadedImage(imageURL);
+      };
 
   return (
     <div className='create-account-flex-container'>
+      {isSubmitted ? (
+        <div className='form-create-account'>
+          <h4 className='download-image-user'>Download your profile picture here</h4>
+          <div>
+              <Upload onImageUpload={handleImageUpload} />
+              <button className='bt-finish-create-account'>Finished <FaCheck className='FaCheck ' /></button>
+          </div>
+        </div>
+      ) : (
       <div className='form-create-account'>
         <h4>Don't have an account yet ?</h4>
         <hr className='hr-create-account' />
@@ -79,6 +100,7 @@ function CreateAccount() {
           </button>
         </form>
       </div>
+      )}
 
       <div className='forms-create-account'>
         <p className='login-create-account'>
