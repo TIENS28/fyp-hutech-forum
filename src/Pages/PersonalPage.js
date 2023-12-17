@@ -36,45 +36,42 @@ import { FaEllipsisH } from "react-icons/fa";
 import EditPost from '../Components/EditPost';
 import Comment from '../Components/Comment';
 
-function PersonalPage({closeComment}) {
+function PersonalPage({ closeComment }) {
   const { user } = useUser();
-  console.log('User Data:', user);
-    const navigate = useNavigate();
+  const navigate = useNavigate();
+  const location = useLocation();
+  const { editorData, uploadedImage } = location.state || {};
+  const hasPostData = editorData || uploadedImage;
 
-    const location = useLocation();
-    const { editorData, uploadedImage } = location.state || {};
-    console.log({ editorData, uploadedImage });
-    const hasPostData = editorData || uploadedImage;
+  const [isLiked, setIsLiked] = useState(false);
+  const handleClick = () => {
+    setIsLiked(!isLiked);
+  };
 
-    const [isLiked, setIsLiked] = useState(false);
-    const handleClick = () => {
-      setIsLiked(!isLiked);
+  const [openModal, setOpenModal] = useState(false);
+  useEffect(() => {
+    if (openModal) {
+      document.body.style.overflow = 'hidden';
+    } else {
+      document.body.style.overflow = 'auto';
+    }
+    return () => {
+      document.body.style.overflow = 'auto';
     };
+  }, [openModal]);
 
-    const [openModal, setOpenModal] = useState(false);
-    useEffect(() => {
-      if (openModal) {
-        document.body.style.overflow = 'hidden';
-      } else {
-        document.body.style.overflow = 'auto'; 
-      }
-      return () => {
-        document.body.style.overflow = 'auto';
-      };
-    }, [openModal]);
-
-    const [openComment, setOpenComment] = useState(false);
-    useEffect(() => {
-      if (openComment) {
-        document.body.style.overflow = 'hidden';
-      } else {
-        document.body.style.overflow = 'auto'; 
-      }
-      return () => {
-        document.body.style.overflow = 'auto';
-      };
-    }, [openComment]);
-
+  const [openComment, setOpenComment] = useState(false);
+  useEffect(() => {
+    if (openComment) {
+      document.body.style.overflow = 'hidden';
+    } else {
+      document.body.style.overflow = 'auto';
+    }
+    return () => {
+      document.body.style.overflow = 'auto';
+    };
+  }, [openComment]);
+  
   return (
     <>
     {openModal && <EditPost closeModal={setOpenModal}/>}
@@ -82,9 +79,10 @@ function PersonalPage({closeComment}) {
     <div className="personal-flex-container">
         <div className='personal-post'>
             <div className='create-post'>
-                <img className='homepage-personal-page'
-                     src="Yone.jpg" 
-                     alt="Avatar"></img>
+            <img className='homepage-personal-page'
+                  src={user.avatarUrl} 
+                  alt="Avatar"
+                />
                 <button onClick={()=>{navigate('/create', {replace:true})}}
                         className="home-create-post" 
                         type="submit" 
@@ -100,9 +98,9 @@ function PersonalPage({closeComment}) {
               onClick={() => {
                 navigate('/personal', { replace: true });
               }}
-              className="homepage-personal-page"
-              src="Yone.jpg"
-              alt="Avatar"
+              className='homepage-personal-page'
+                  src={user.avatarUrl} 
+                  alt="Avatar"
             />
           </div>
           <div className="user-home-user">
@@ -149,6 +147,11 @@ function PersonalPage({closeComment}) {
         <div className='form-personal'>
             <div className='personal'>
                 <div className='background'></div>
+
+                <img className='homepage-personal-page'
+                  src={user.avatarUrl} 
+                  alt="Avatar"
+                />
 
                 <div className='personal-informations'>
                     Fullname: {user.fullName}

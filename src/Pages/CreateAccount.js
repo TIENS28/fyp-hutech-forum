@@ -3,6 +3,7 @@ import './CreateAccount.css';
 import { Link, useHistory, NavLink } from 'react-router-dom';
 
 function CreateAccount() {
+  const formData = new FormData();
   const [firstName, setFirstName] = useState('');
   const [lastName, setLastName] = useState('');
   const [email, setEmail] = useState('');
@@ -11,27 +12,24 @@ function CreateAccount() {
   const [department, setDepartment] = useState('');
   const [studentID, setStudentID] = useState('')
   const [status, setStatus] = useState(null); // null: not submitted, true: success, false: error
+  const [avatar, setAvatar] = useState(null); // New state for avatar file
 
   const handleSubmit = async (event) => {
     event.preventDefault();
 
-    const data = {
-      firstName,
-      lastName,
-      email,
-      password,
-      dob,
-      department,
-      studentID,
-    };
+    formData.append('firstName', firstName);
+    formData.append('lastName', lastName);
+    formData.append('email', email);
+    formData.append('password', password);
+    formData.append('dob', dob);
+    formData.append('department', department);
+    formData.append('studentID', studentID);
+    formData.append('avatar', avatar); // Append the avatar file
 
     try {
       const response = await fetch('http://localhost:5001/api/auth/register', {
         method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(data),
+        body: formData,
       });
 
       if (response.ok) {
@@ -100,6 +98,12 @@ function CreateAccount() {
             placeholder="Enter StudentID"
             value={studentID}
             onChange={(e) => setStudentID(e.target.value)}
+          />
+           <input
+            className='input-create-account'
+            type="file"
+            accept=".jpg, .jpeg, .png"
+            onChange={(e) => setAvatar(e.target.files[0])}
           />
           <button type="submit" className='bt-submit-create-account'>
             Submit

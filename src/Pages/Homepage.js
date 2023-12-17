@@ -90,9 +90,9 @@ function Homepage({ setIsNavbarVisible }) {
             onClick={() => {
               navigate('/personal', { replace: true });
             }}
-            className="homepage-personal-page"
-            src="Yone.jpg"
-            alt="Avatar"
+            className='homepage-personal-page'
+                  src={user.avatarUrl} 
+                  alt="Avatar"
           ></img>
           <button
             onClick={() => {
@@ -121,8 +121,7 @@ function Homepage({ setIsNavbarVisible }) {
           </div>
           <div className="user-home-user">
             <span className="user-date">{user.fullName}</span>
-            <br />
-            <span className="user-date">Date: 7/10/2023 </span>
+            
           </div>
           <div className="item-home-user">
             <FaEllipsisH className="fa-ellipsis-h"
