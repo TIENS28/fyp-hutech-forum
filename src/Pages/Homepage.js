@@ -7,7 +7,7 @@ import { FaRegComments } from 'react-icons/fa';
 import { FaHeart } from 'react-icons/fa';
 import { FaRegStar } from 'react-icons/fa';
 import { AiFillHeart } from 'react-icons/ai';
-import AddComment from '../Components/AddComment';
+
 import EditPost from '../Components/EditPost';
 import Comment from '../Components/Comment';
 
@@ -26,12 +26,8 @@ function Homepage({ setIsNavbarVisible }) {
   const location = useLocation();
   const { editorData, uploadedImage } = location.state || {};
   const hasPostData = editorData || uploadedImage;
-  const [allPosts, setAllPosts] = useState([]);
 
   const [likedStates, setLikedStates] = useState({});
-  const [openModal, setOpenModal] = useState(false);
-  const [openComment, setOpenComment] = useState(false);
-  const [selectedPostId, setSelectedPostId] = useState(null); 
 
   const handleClick = (postId) => {
     setLikedStates((prevStates) => ({
@@ -40,30 +36,7 @@ function Homepage({ setIsNavbarVisible }) {
     }));
   };
 
-  const handleAddComment = async (postId, content) => {
-    try {
-      const response = await fetch(`http://localhost:5001/api/auth/posts/${postId}/addComment`, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          Authorization: `Bearer ${localStorage.getItem('token')}`,
-        },
-        body: JSON.stringify({
-          content: content,
-        }),
-      });
-
-      if (response.ok) {
-        console.log('Comment added successfully');
-        setOpenComment(false); // Close the comment input form on success
-      } else {
-        console.error('Error adding comment');
-      }
-    } catch (error) {
-      console.error('Error adding comment:', error);
-    }
-  };
-
+  const [openModal, setOpenModal] = useState(false);
   useEffect(() => {
     if (openModal) {
       document.body.style.overflow = 'hidden';
@@ -75,6 +48,7 @@ function Homepage({ setIsNavbarVisible }) {
     };
   }, [openModal]);
 
+  const [openComment, setOpenComment] = useState(null);
   useEffect(() => {
     if (openComment) {
       document.body.style.overflow = 'hidden';
@@ -85,6 +59,8 @@ function Homepage({ setIsNavbarVisible }) {
       document.body.style.overflow = 'auto';
     };
   }, [openComment]);
+
+  const [allPosts, setAllPosts] = useState([]);
 
   useEffect(() => {
     const fetchAllPosts = async () => {
@@ -107,7 +83,7 @@ function Homepage({ setIsNavbarVisible }) {
   return (
     <>
       {openModal && <EditPost closeModal={setOpenModal} />}
-      {openComment && <Comment closeComment={setOpenComment} />}
+      {openComment && <Comment closeComment={() => setOpenComment(null)} postInfo={openComment} />}
       <div className="home-flex-container">
         <div className="create-post">
           <img
@@ -182,17 +158,22 @@ function Homepage({ setIsNavbarVisible }) {
                   onClick={() => handleClick(post.id.toString())}
                   style={{ color: likedStates[post.id.toString()] ? 'DeepPink' : 'Black' }}
                 />
-                <FaRegComments className="FaRegComments"
-                  onClick={() => {
-                  setOpenComment(true);
-                  setSelectedPostId(post.id);
-                }}
-        />
+                <FaRegComments 
+                  className="FaRegComments"
+                  onClick={() => setOpenComment(post)}
+                />
                 
                 <FaRegStar className="FaRegStar" />
-                  {selectedPostId && openComment && (
-                  <AddComment postId={selectedPostId} addComment={handleAddComment} />
-                )}
+                {/*chỉnh lại cho nó vào một ô */}
+                <div className="comments-section">
+                  <h3>Comments</h3>
+                  <ul>
+                    {post.comments.map((comment) => (
+                      <li key={comment.id}>{comment.content}</li>
+                    ))}
+                  </ul>
+                </div>
+                {/*chỉnh lại cho nó vào một ô */}
               </div>
             </div>
           </div>
