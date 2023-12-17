@@ -83,7 +83,12 @@ function Homepage({ setIsNavbarVisible }) {
   return (
     <>
       {openModal && <EditPost closeModal={setOpenModal} />}
-      {openComment && <Comment closeComment={() => setOpenComment(null)} postInfo={openComment} />}
+      {openComment !== null && (
+        <Comment
+          closeComment={() => setOpenComment(null)}
+          postInfo={openComment}
+        />
+      )}
       <div className="home-flex-container">
         <div className="create-post">
           <img
@@ -158,22 +163,13 @@ function Homepage({ setIsNavbarVisible }) {
                   onClick={() => handleClick(post.id.toString())}
                   style={{ color: likedStates[post.id.toString()] ? 'DeepPink' : 'Black' }}
                 />
-                <FaRegComments 
-                  className="FaRegComments"
-                  onClick={() => setOpenComment(post)}
-                />
+                <FaRegComments
+                      className="FaRegComments"
+                      onClick={() => setOpenComment(post)}
+                    />
                 
                 <FaRegStar className="FaRegStar" />
-                {/*chỉnh lại cho nó vào một ô */}
-                <div className="comments-section">
-                  <h3>Comments</h3>
-                  <ul>
-                    {post.comments.map((comment) => (
-                      <li key={comment.id}>{comment.content}</li>
-                    ))}
-                  </ul>
-                </div>
-                {/*chỉnh lại cho nó vào một ô */}
+                
               </div>
             </div>
           </div>

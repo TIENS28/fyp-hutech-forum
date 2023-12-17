@@ -1,11 +1,11 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
 import './Comment.css';
 import { useUser } from '../Components/UserContext';
-import { FaRegComments } from "react-icons/fa";
-import { FaHeart } from "react-icons/fa";
-import { FaRegStar } from "react-icons/fa";
-import { AiFillHeart } from "react-icons/ai";
+import { FaRegComments } from 'react-icons/fa';
+import { FaHeart } from 'react-icons/fa';
+import { FaRegStar } from 'react-icons/fa';
+import { AiFillHeart } from 'react-icons/ai';
 
 function Comment({ closeComment, postInfo }) {
   const navigate = useNavigate();
@@ -16,9 +16,20 @@ function Comment({ closeComment, postInfo }) {
   const { user } = useUser();
   const [isLiked, setIsLiked] = useState(false);
   const [commentText, setCommentText] = useState('');
+  const [comments, setComments] = useState([]);
 
   const handleClick = () => {
     setIsLiked(!isLiked);
+  };
+
+  const fetchComments = async () => {
+    try {
+      const response = await fetch(`http://localhost:5001/api/auth/posts/${postInfo.id}/comments`);
+      const data = await response.json();
+      setComments(data);
+    } catch (error) {
+      console.error('Error fetching comments:', error);
+    }
   };
 
   const handleCommentSubmit = async () => {
@@ -31,13 +42,14 @@ function Comment({ closeComment, postInfo }) {
           'Content-Type': 'application/json',
         },
         body: JSON.stringify({
-          content: commentText,  
+          content: commentText,
         }),
       });
-  
+
       if (response.ok) {
+        fetchComments();
         console.log('Comment submitted successfully');
-        closeComment(false);
+        setCommentText('');
       } else {
         console.error('Error submitting comment:', response.statusText);
       }
@@ -45,19 +57,19 @@ function Comment({ closeComment, postInfo }) {
       console.error('Error submitting comment:', error.message);
     }
   };
-  
+
+  useEffect(() => {
+    fetchComments();
+  }, [postInfo.id]);
 
   return (
     <div className='modalComment'>
       <div className='modalCommentContent'>
         <div className='comment-flex-container'>
           <div className='comment-user'>
-            <h2>{/* User's name or other identifier */}</h2>
+            <h2>{postInfo.user.fullName} post </h2>
           </div>
-          <div
-            className='comment-cancel'
-            onClick={() => closeComment(false)}
-          >
+          <div className='comment-cancel' onClick={() => closeComment(false)}>
             X
           </div>
         </div>
@@ -96,8 +108,8 @@ function Comment({ closeComment, postInfo }) {
                 )}
                 <div className='home-interactions'>
                   <AiFillHeart className='number-interaction' />
-                  <span className='numbers-interaction'>2</span>
-                  <span className='numbers-comments-interaction'>5 Comments</span>
+                  <span className='numbers-interaction'>{postInfo.totalLikes}</span>
+                  <span className='numbers-comments-interaction'>{comments.length} Comments</span>
                 </div>
                 <div>
                   <hr className='home-hr' />
@@ -111,6 +123,20 @@ function Comment({ closeComment, postInfo }) {
                   <FaRegComments className='FaRegComments' />
                   <FaRegStar className='FaRegStar' />
                 </div>
+                <div className='comments-section'>
+                  <h3>Comments</h3>
+                  <ul>
+                    {comments.map((comment) => (
+                      <li key={comment.id}>
+                        <strong>{comment.user && comment.user.fullName}</strong>:
+                        <br></br>
+                        {comment.content}
+                        <br></br>
+                        <br></br>
+                      </li>
+                    ))}
+                  </ul>
+                </div>
                 {/* Comment input area */}
                 <textarea
                   placeholder='Write a comment...'
@@ -118,7 +144,7 @@ function Comment({ closeComment, postInfo }) {
                   onChange={(e) => setCommentText(e.target.value)}
                 />
                 {/* Button to submit the comment */}
-                <button onClick={handleCommentSubmit} >Submit Comment</button>
+                <button onClick={handleCommentSubmit}>Submit Comment</button>
               </div>
             )}
           </div>
