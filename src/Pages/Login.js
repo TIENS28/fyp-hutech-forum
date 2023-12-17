@@ -19,12 +19,13 @@ function Login() {
       const success = await login(email, password);
   
       if (success) {
+        const token = localStorage.getItem('token');
+  
         const userResponse = await fetch(`http://localhost:5001/api/auth/users/user/${email}`, {
           method: 'GET',
           headers: {
-            Authorization: `Bearer ${localStorage.getItem('token')}`,
+            Authorization: `Bearer ${token}`,
           },
-          
         });
   
         if (userResponse.ok) {
@@ -41,7 +42,7 @@ function Login() {
       console.error('Error during login:', error);
     }
   };
-
+  
 
   return (
     <div className="login-flex-container">

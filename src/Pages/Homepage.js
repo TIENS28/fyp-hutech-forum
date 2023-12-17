@@ -7,7 +7,7 @@ import { FaRegComments } from 'react-icons/fa';
 import { FaHeart } from 'react-icons/fa';
 import { FaRegStar } from 'react-icons/fa';
 import { AiFillHeart } from 'react-icons/ai';
-
+import AddComment from '../Components/AddComment';
 import EditPost from '../Components/EditPost';
 import Comment from '../Components/Comment';
 
@@ -26,8 +26,12 @@ function Homepage({ setIsNavbarVisible }) {
   const location = useLocation();
   const { editorData, uploadedImage } = location.state || {};
   const hasPostData = editorData || uploadedImage;
+  const [allPosts, setAllPosts] = useState([]);
 
   const [likedStates, setLikedStates] = useState({});
+  const [openModal, setOpenModal] = useState(false);
+  const [openComment, setOpenComment] = useState(false);
+  const [selectedPostId, setSelectedPostId] = useState(null); 
 
   const handleClick = (postId) => {
     setLikedStates((prevStates) => ({
@@ -36,7 +40,30 @@ function Homepage({ setIsNavbarVisible }) {
     }));
   };
 
-  const [openModal, setOpenModal] = useState(false);
+  const handleAddComment = async (postId, content) => {
+    try {
+      const response = await fetch(`http://localhost:5001/api/auth/posts/${postId}/addComment`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${localStorage.getItem('token')}`,
+        },
+        body: JSON.stringify({
+          content: content,
+        }),
+      });
+
+      if (response.ok) {
+        console.log('Comment added successfully');
+        setOpenComment(false); // Close the comment input form on success
+      } else {
+        console.error('Error adding comment');
+      }
+    } catch (error) {
+      console.error('Error adding comment:', error);
+    }
+  };
+
   useEffect(() => {
     if (openModal) {
       document.body.style.overflow = 'hidden';
@@ -48,7 +75,6 @@ function Homepage({ setIsNavbarVisible }) {
     };
   }, [openModal]);
 
-  const [openComment, setOpenComment] = useState(false);
   useEffect(() => {
     if (openComment) {
       document.body.style.overflow = 'hidden';
@@ -59,8 +85,6 @@ function Homepage({ setIsNavbarVisible }) {
       document.body.style.overflow = 'auto';
     };
   }, [openComment]);
-
-  const [allPosts, setAllPosts] = useState([]);
 
   useEffect(() => {
     const fetchAllPosts = async () => {
@@ -121,7 +145,8 @@ function Homepage({ setIsNavbarVisible }) {
           </div>
           <div className="user-home-user">
             <span className="user-date">{user.fullName}</span>
-            
+            <br />
+            <span className="user-date">Date: 7/10/2023 </span>
           </div>
           <div className="item-home-user">
             <FaEllipsisH className="fa-ellipsis-h"
@@ -157,9 +182,17 @@ function Homepage({ setIsNavbarVisible }) {
                   onClick={() => handleClick(post.id.toString())}
                   style={{ color: likedStates[post.id.toString()] ? 'DeepPink' : 'Black' }}
                 />
-                <FaRegComments className="FaRegComments" onClick={() => setOpenComment(true)} />
+                <FaRegComments className="FaRegComments"
+                  onClick={() => {
+                  setOpenComment(true);
+                  setSelectedPostId(post.id);
+                }}
+        />
                 
                 <FaRegStar className="FaRegStar" />
+                  {selectedPostId && openComment && (
+                  <AddComment postId={selectedPostId} addComment={handleAddComment} />
+                )}
               </div>
             </div>
           </div>
