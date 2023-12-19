@@ -14,7 +14,6 @@ import Comment from '../Components/Comment';
 function Homepage({ setIsNavbarVisible }) {
   const navigate = useNavigate();
   const { user } = useUser();
-  console.log('User Data:', user);
 
   useEffect(() => {
     setIsNavbarVisible(true);
@@ -120,14 +119,12 @@ function Homepage({ setIsNavbarVisible }) {
                 navigate('/personal', { replace: true, state: { editorData, uploadedImage } });
               }}
               className="homepage-personal-page"
-              src="Yone.jpg"
+              src={user.avatarUrl}
               alt="Avatar"
             />
           </div>
           <div className="user-home-user">
             <span className="user-date">{user.fullName}</span>
-            <br />
-            <span className="user-date">Date: 7/10/2023 </span>
           </div>
           <div className="item-home-user">
             <FaEllipsisH className="fa-ellipsis-h"

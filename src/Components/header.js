@@ -1,14 +1,16 @@
+// Header.js
 import React from 'react';
-import { Link } from 'react-router-dom';
 import { FaArrowLeft } from 'react-icons/fa';
+import { useNavigate, useLocation } from 'react-router-dom';
 
 const Header = () => {
+  const navigate = useNavigate();
+
   return (
     <div className="header-container">
-      <Link to="/" className="header-icon">
-        <FaArrowLeft />
-      </Link>
-      <div className="header-title">Your Header Title</div>
+        <FaArrowLeft onClick={() => {
+              navigate('/homepage', { replace: true });
+            }}/>
     </div>
   );
 };

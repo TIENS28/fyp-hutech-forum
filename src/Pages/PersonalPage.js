@@ -1,29 +1,10 @@
-// import React from 'react';
-// import { useUser } from '../Components/UserContext';
-
-// function UserProfile() {
-//   const { user } = useUser();
-//   console.log('User Data:', user);
-
-//   return (
-//     <div>
-//       <h2>User Profile</h2>
-//       {user.fullName && <p>Full Name: {user.fullName}</p>}
-//       {user.email && <p>Email: {user.email}</p>}
-//     </div>
-//   );
-// }
-
-// export default UserProfile;
 
 import React, { useState, useEffect } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom'
 import { useUser } from '../Components/UserContext';
 import './PersonalPage.css'; 
+import Header from '../Components/header'; 
 
-import { MdOutlinePostAdd } from "react-icons/md";
-import { IoPersonAddOutline } from "react-icons/io5";
-import { SlUserFollowing } from "react-icons/sl";
 import { FaPlus } from "react-icons/fa";
 import { IoSettingsSharp } from "react-icons/io5";
 
@@ -41,9 +22,9 @@ function PersonalPage({ closeComment }) {
   const navigate = useNavigate();
   const location = useLocation();
   const { editorData, uploadedImage } = location.state || {};
-  const hasPostData = editorData || uploadedImage;
-
+  const [likedStates, setLikedStates] = useState({});
   const [isLiked, setIsLiked] = useState(false);
+  console.log('User Data:', user);
   const handleClick = () => {
     setIsLiked(!isLiked);
   };
@@ -72,8 +53,41 @@ function PersonalPage({ closeComment }) {
     };
   }, [openComment]);
   
+  
+  const renderContent = (content) => {
+    return { __html: content.replace(/(?:\r\n|\r|\n)/g, '<br>') };
+  };
+
+  const [userPosts, setUserPosts] = useState([]);
+
+  useEffect(() => {
+    const fetchUserPosts = async () => {
+        try {
+            const token = localStorage.getItem('token');
+      
+            const response = await fetch(`http://localhost:5001/api/auth/posts/user/post`, {
+              method: 'GET',
+              headers: {
+                Authorization: `Bearer ${token}`,
+              },
+            });
+            if (!response.ok) {
+                throw new Error("Failed to fetch user posts");
+            }
+            const data = await response.json();
+            console.log("User Posts Data:", data);
+            setUserPosts(data);
+        } catch (error) {
+            console.error("Error fetching user posts", error);
+        }
+    };
+
+    fetchUserPosts();
+}, []);
+
   return (
     <>
+    <Header />
     {openModal && <EditPost closeModal={setOpenModal}/>}
     {openComment && <Comment closeComment={setOpenComment}/>}
     <div className="personal-flex-container">
@@ -87,63 +101,49 @@ function PersonalPage({ closeComment }) {
                         className="home-create-post" 
                         type="submit" 
                         value="create-post" >Create Post</button>
-             </div>
+            </div>
+            <div className="editor-content">
+              {userPosts.map((post) => (
+                <div key={post.id} className="flex-container-home-user">
+                
+                <div className='editor-content'>
+                <div className='user-home-user'>
+                <span className='user-date'>At: {new Date(post.createdDate).toLocaleDateString()}</span>
+                <span className='user-date'>{post.user.fullName}</span>
+                </div>
+                  <h1>{post.title}</h1>
+                  {post.description && <p>{post.description}</p>}
+                  {post.thumbnail && <img src={post.thumbnail} alt="Post Thumbnail" style={{ width: '600px', height: '400px' }} />}
+                  {post.content && <p dangerouslySetInnerHTML={renderContent(post.content)}></p>}
+                  <div className='home-interactions'>
+                    <AiFillHeart className='number-interaction' />
+                    <span className='numbers-comments-interaction'>{post.totalComments} Comments</span>
 
-             <div className='users-post'>
-             <div className="home-flex-containe">
-            {hasPostData && (
-                <div className="flex-container-home-user">
-          <div className="img-home-user">
-            <img
-              onClick={() => {
-                navigate('/personal', { replace: true });
-              }}
-              className='homepage-personal-page'
-                  src={user.avatarUrl} 
-                  alt="Avatar"
-            />
-          </div>
-          <div className="user-home-user">
-            <span className="user-date">{user.fullName}</span>
-            <br />
-            <span className="user-email">{user.email}</span>
-            
-          </div>
-          <div className="item-home-user">
-            <FaEllipsisH className="fa-ellipsis-h"
-                        onClick={() => {setOpenModal(true)}}/>
+                  </div>
+                  <div>
+                    <hr className='home-hr' />
+                  </div>
+                  <div className="interaction">
+                    <FaHeart
+                      className="FaHeart"
+                      onClick={() => handleClick(post.id.toString())}
+                      style={{ color: likedStates[post.id.toString()] ? 'DeepPink' : 'Black' }}
+                    />
+                    <FaRegComments
+                          className="FaRegComments"
+                          onClick={() => setOpenComment(post)}
+                        />
+                    
+                    <FaRegStar className="FaRegStar" />
+                    
+                  </div>
+                </div>
+              </div>
+            ))}
           </div>
         </div>
-      )}
-
-      <div className="editor-content">
-        {hasPostData && (
-      <div className="editor-content">
-        <div dangerouslySetInnerHTML={{ __html: editorData }} />
-        {uploadedImage && <img src={uploadedImage} alt="Uploaded" style={{ width: '600px', height: '400px' }}/>}
-        <div className="home-interactions">
-          <AiFillHeart className="number-interaction" />
-          <span className="numbers-interaction">2</span>
-          <span className="numbers-comments-interaction">5 Comments</span>
-        </div>
-        <div>
-          <hr className="home-hr" />
-        </div>
-        <div className="interaction">
-        <FaHeart className='FaHeart' 
-          onClick={handleClick}
-          style={{ color: isLiked ? 'DeepPink' : 'Black' }}/>
-          <FaRegComments className='FaRegComments'
-                         onClick={() => {setOpenComment(true)}}/>
-          <FaRegStar className='FaRegStar'/>
-        </div>
-      </div>
-     )}
-      </div>
-     </div>
-             </div>
-        </div>
-
+        
+        
         <div className='form-personal'>
             <div className='personal'>
                 <div className='background'></div>
