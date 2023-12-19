@@ -1,30 +1,80 @@
-import React from 'react';
-import { useNavigate } from 'react-router-dom'
+import React, { useState } from 'react';
 import './ForgotPassword.css';
+import { NavLink } from 'react-router-dom';
 
 function ForgotPassword() {
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
+  const [status, setStatus] = useState(null); 
 
-    const navigate = useNavigate();
+  const handleSubmit = async (event) => {
+    event.preventDefault();
+  
+    const formData = new FormData();
+    formData.append("email", email)
+    formData.append('newPassword', password);
+  
+    try {
+      const response = await fetch('http://localhost:5001/api/auth/resetPassword', {
+        method: 'POST',
+        body: formData,
+       
+      });
+  
+      if (response.ok) {
+        setStatus(true);
+      } else {
+        setStatus(false);
+      }
+    } catch (error) {
+      console.error('Error during API call:', error);
+      setStatus(false); // Error
+    }
+  };
 
   return (
-    <div className='forgot-password-flex-container'>
-        <div className='form-forgot-password'>
-            <h4>Forgot Password ?</h4>
-            <hr className='hr-forgot-password'/>
-            <p className='text-forgot-password'>Please enter your student email to change your new password.</p>
-            <form>
-                <input className='input-forgot-password'
-                       type="text" 
-                       placeholder="Enter email"/>
-            </form>
-            <hr className='hr-forgot-password'/>
-            <div className='button-forgot-password'>
-                <button onClick={()=>{navigate('/login', {replace:true})}}
-                className='bt-cancel-forgot-password'>Cancel</button>
-                <button className='bt-submit-forgot-password'>Submit</button>
-            </div>
-        </div>
-        
+    <div className='create-account-flex-container'>
+      <div className='form-create-account'>
+        <form onSubmit={handleSubmit}>
+          <input
+            className='input-create-account'
+            type="text"
+            placeholder="Enter email"
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
+          />
+
+          <input
+            className='input-create-account'
+            type="password"
+            placeholder="Enter password"
+            value={password}
+            onChange={(e) => setPassword(e.target.value)}
+          />
+          <button type="submit" className='bt-submit-create-account'>
+            Submit
+          </button>
+        </form>
+        {status !== null && (
+          <div className={status ? 'success-message' : 'error-message'}>
+            {status ? 'Reset password successfully!  '  : 'Failed to reset password'}
+            <NavLink className='forgot-password' to='/login'>
+                 Login
+            </NavLink>
+          </div>
+        )}
+      </div>
+
+      <div className='forms-create-account'>
+        <p className='login-create-account'>
+          Do you have an account?
+          <span>
+            <NavLink className='forgot-password' to='/login'>
+              Login
+            </NavLink>
+          </span>
+        </p>
+      </div>
     </div>
   );
 }

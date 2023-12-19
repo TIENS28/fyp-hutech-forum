@@ -1,0 +1,42 @@
+.bt-update-setting {
+    display: flex;
+    align-items: center;
+    border: 1px solid black;
+    color: black;
+    border-radius: 50px;
+    align-self: flex-end;
+    justify-content: center;
+    text-align: center;
+    margin-top: 20px;
+    width: auto;
+    margin-right: 10px;
+    padding: 10px 20px;
+    cursor: pointer;
+    font-size: 18px;
+}
+
+.bt-update-setting:hover {
+    text-decoration: underline;
+}
+
+.bt-update-profile {
+    display: flex;
+    align-items: center;
+    border: 1px solid blue;
+    color: blue;
+    border-radius: 50px;
+    align-self: flex-end;
+    justify-content: center;
+    text-align: center;
+    margin-top: 20px;
+    width: auto;
+    margin-right: 10px;
+    padding: 10px 20px;
+    cursor: pointer;
+    font-size: 18px;
+}
+
+.bt-update-profile:hover {
+    border: 1px solid LimeGreen;
+    color: LimeGreen;
+}
