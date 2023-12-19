@@ -57,3 +57,30 @@
     padding: 0.5px;
     background-color: LightGray;
 }
+
+.comment-input-area {
+    display: flex;
+    flex-direction: column;
+}
+
+.textarea-input-comment {
+    height: auto;
+    min-height: 70px;
+    margin-bottom: 10px;
+}
+
+.bt-submit-comment {
+    border: none;
+    border-radius: 50px;
+    float: right;
+    width: 200px;
+    font-size: 1rem;
+    padding: 5px;
+    color: #FFF;
+    background-color: #1877f2;
+    margin-bottom: 10px;
+}
+
+.bt-submit-comment:hover {
+    cursor: pointer;
+}

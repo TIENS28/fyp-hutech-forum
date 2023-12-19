@@ -12,6 +12,7 @@ import Setting from './Pages/Setting';
 import Save from './Pages/Save';
 import ForgotPassword from './Pages/ForgotPassword';
 import CreateAccount from './Pages/CreateAccount';
+import UpdateProfile from './Pages/UpdateProfile';
 
 function App() {
   const [isNavbarVisible, setIsNavbarVisible] = useState(false);
@@ -32,6 +33,7 @@ function App() {
           <Route path='/tien' element={<Personal />} />
           <Route path='/setting' element={<Setting />} />
           <Route path='/save' element={<Save />} />
+          <Route path='/update' element={<UpdateProfile />} />
           {/* Add other routes */}
           <Route path='*' element={<Navigate to="/login" />} />
         </Routes>

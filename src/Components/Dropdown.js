@@ -19,7 +19,11 @@ function Dropdown() {
     <div className="Dropdowss">
     <div className='menu-container'>
       <div className='menu-trigger' >
-        <img className='img-username' src="Yone.jpg" alt="Avatar"></img>
+        {/* <img className='img-username' src="Yone.jpg" alt="Avatar"></img> */}
+        <img className='img-username'
+                  src={user.avatarUrl} 
+                  alt="Avatar"
+                />
       </div>
 
       <div className={`dropdown-menu ${open ? 'active' : 'inactive'}`}>

@@ -29,6 +29,10 @@ a {
     text-decoration: none;
 }
 
+.menu-trigger {
+    display: flex;
+}
+
 .img-username {
     border: 1px solid black;
     height: 30px;
