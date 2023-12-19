@@ -189,3 +189,37 @@
     height: 1px;
     margin: 10px;
 }
+
+.bt-setting-homepage {
+    display: flex;
+    align-items: center;
+    border: 1px solid LimeGreen;
+    color: LimeGreen;
+    border-radius: 50px;
+    align-self: flex-end;
+    justify-content: center;
+    text-align: center;
+    margin-top: 20px;
+    width: auto;
+    margin-right: 10px;
+    padding: 10px 20px;
+    cursor: pointer;
+    font-size: 18px;
+}
+
+.setting-change-password {
+    margin-bottom: 10px;
+    font-size: 1rem;
+    color: blue;
+}
+
+.setting-change-password:hover {
+    cursor: pointer;
+    text-decoration: underline;
+}
+
+.bt-settings {
+    display: flex;
+    width: 100%;
+    justify-content: flex-end;
+}

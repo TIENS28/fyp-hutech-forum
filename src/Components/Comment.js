@@ -125,6 +125,16 @@ function Comment({ closeComment, postInfo }) {
                 </div>
                 <div className='comments-section'>
                   <h3>Comments</h3>
+                  <div className='comment-input-area'>
+                    {/* Comment input area */}
+                    <textarea className='textarea-input-comment'
+                      placeholder='Write a comment...'
+                      value={commentText}
+                      onChange={(e) => setCommentText(e.target.value)}
+                    />
+                    {/* Button to submit the comment */}
+                    <button className='bt-submit-comment'onClick={handleCommentSubmit}>Submit Comment</button>
+                  </div>
                   <ul>
                     {comments.map((comment) => (
                       <li key={comment.id}>
@@ -137,14 +147,6 @@ function Comment({ closeComment, postInfo }) {
                     ))}
                   </ul>
                 </div>
-                {/* Comment input area */}
-                <textarea
-                  placeholder='Write a comment...'
-                  value={commentText}
-                  onChange={(e) => setCommentText(e.target.value)}
-                />
-                {/* Button to submit the comment */}
-                <button onClick={handleCommentSubmit}>Submit Comment</button>
               </div>
             )}
           </div>
