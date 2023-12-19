@@ -223,3 +223,34 @@
     width: 100%;
     justify-content: flex-end;
 }
+
+.icon-edit-profile {
+    padding-left: 5px;
+    font-size: 1.5rem;
+}
+
+.icon-edit-profile:hover {
+    cursor: pointer;
+}
+
+.bt-setting-delete {
+    display: flex;
+    align-items: center;
+    border: 1px solid black;
+    color: black;
+    border-radius: 50px;
+    align-self: flex-end;
+    justify-content: center;
+    text-align: center;
+    margin-top: 20px;
+    width: auto;
+    margin-right: 10px;
+    padding: 10px 20px;
+    cursor: pointer;
+    font-size: 18px;
+    float: right;
+}
+
+.bt-setting-delete:hover {
+    text-decoration: underline;
+}

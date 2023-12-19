@@ -7,6 +7,7 @@ import './Setting.css';
 import { MdEdit } from "react-icons/md";
 import { FaSignOutAlt }    from "react-icons/fa";
 import { FaHome } from "react-icons/fa";
+import { MdDelete } from "react-icons/md";
 // import { FaHeart } from "react-icons/fa";
 // import { FaChevronRight } from "react-icons/fa";
 // import { FaComments } from "react-icons/fa6";
@@ -45,7 +46,7 @@ function Setting() {
             <p className='setting-text'>Email</p>
             <div className='setting-information'>
                 <p className='setting-texts'>{user.email}</p>
-                <span className='setting-edit'><MdEdit /></span>
+                {/* <span className='setting-edit'><MdEdit /></span> */}
             </div>
             <hr className='setting-hr'/>
 
@@ -56,15 +57,17 @@ function Setting() {
             </div>
             <hr className='setting-hr'/>
           </div>
+          <button onClick={()=>{navigate('/login', {replace:true})}}
+                className='bt-setting-delete'><MdDelete style={{ marginRight: '5px' }}/>Delete Accont</button>
       </div>
 
       <div>
-          <h2 className='setting-h2'>Profile</h2>
+          <h2 className='setting-h2'>Profile <MdEdit className='icon-edit-profile' onClick={()=>{navigate('/update', {replace:true})}}/></h2>
           <div className='form-setting'>
             <p className='setting-text'>Full Name</p>
             <div className='setting-information'>
                 <p className='setting-texts'>{user.fullName}</p>
-                <span className='setting-edit'><MdEdit /></span>
+                {/* <span className='setting-edit'><MdEdit /></span> */}
             </div>
             <hr className='setting-hr'/>
           </div>
@@ -72,7 +75,7 @@ function Setting() {
             <p className='setting-text'>Email</p>
             <div className='setting-information'>
                 <p className='setting-texts'>{user.email}</p>
-                <span className='setting-edit'><MdEdit /></span>
+                {/* <span className='setting-edit'><MdEdit /></span> */}
             </div>
             <hr className='setting-hr'/>
           </div>
@@ -80,7 +83,7 @@ function Setting() {
             <p className='setting-text'>DOB</p>
             <div className='setting-information'>
                 <p className='setting-texts'>{user.dob}</p>
-                <span className='setting-edit'><MdEdit /></span>
+                {/* <span className='setting-edit'><MdEdit /></span> */}
             </div>
             <hr className='setting-hr'/>
           </div>
@@ -88,7 +91,7 @@ function Setting() {
             <p className='setting-text'>Department</p>
             <div className='setting-information'>
                 <p className='setting-texts'>{user.department}</p>
-                <span className='setting-edit'><MdEdit /></span>
+                {/* <span className='setting-edit'><MdEdit /></span> */}
             </div>
             <hr className='setting-hr'/>
           </div>
@@ -96,7 +99,7 @@ function Setting() {
             <p className='setting-text'>Student ID</p>
             <div className='setting-information'>
                 <p className='setting-texts'>{user.studentID}</p>
-                <span className='setting-edit'><MdEdit /></span>
+                {/* <span className='setting-edit'><MdEdit /></span> */}
             </div>
             <hr className='setting-hr'/>
           </div>
