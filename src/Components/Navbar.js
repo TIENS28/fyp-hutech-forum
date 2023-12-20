@@ -1,51 +1,72 @@
-import React from 'react';
-import { Link, useNavigate } from 'react-router-dom'
+import React, { useState } from 'react';
+import { Link, useNavigate } from 'react-router-dom';
 import './Navbar.css';
 
-import { FaPlus } from "react-icons/fa";
-import { FaCommentDots } from "react-icons/fa";
-import { FaBell  } from "react-icons/fa";
-
+import { FaPlus, FaCommentDots, FaBell, FaSearch } from 'react-icons/fa';
 import IconButton from '@mui/material/IconButton';
-import {Tooltip} from '@mui/material'
+import Tooltip from '@mui/material/Tooltip';
 import Dropdown from './Dropdown';
 
-function Navbar () {
+function Navbar() {
+  const navigate = useNavigate();
+  const [searchQuery, setSearchQuery] = useState('');
 
-    const navigate = useNavigate();
-    
+  const handleSearch = () => {
+    // Redirect to the SearchPostList page with the search query
+    navigate(`/search?query=${encodeURIComponent(searchQuery)}`);
+  };
+
   return (
     <div className='navbar'>
-        <div className='navbar-left'>
-            <img className='img-logoHUTECH' src="LogoHUTECH.jpg" alt="Logo"></img>
-            <h1 className='h1-HUTECH'
-                onClick={()=>{navigate('/homepage', {replace:true})}}>HUTECH</h1>
-        </div>
+      <div className='navbar-left'>
+        <img className='img-logoHUTECH' src="LogoHUTECH.jpg" alt="Logo"></img>
+        <h1
+          className='h1-HUTECH'
+          onClick={() => {
+            navigate('/homepage', { replace: true });
+          }}
+        >
+          HUTECH
+        </h1>
+      </div>
 
-        <div className='navbar-center'>
-            <input className='search' type='search' placeholder='Search...'></input>
+      <div className='navbar-center'>
+        <div className='search-container'>
+          <input
+            className='search'
+            type='search'
+            placeholder='Search...'
+            value={searchQuery}
+            onChange={(e) => setSearchQuery(e.target.value)}
+          />
+          <Tooltip title='Search' placement='bottom'>
+            <IconButton className='search-icon' onClick={handleSearch}>
+              <FaSearch />
+            </IconButton>
+          </Tooltip>
         </div>
+      </div>
 
-        <div className='navbar-right'>
-            <Link to='/create'>
-                <Tooltip title="Create Post" placement="bottom">
-                    <IconButton className='icons'>
-                        <FaPlus />
-                </IconButton>
-            </Tooltip>
-            </Link>
-            <Tooltip title="Chat" placement="bottom">
-                <IconButton className='icons'>
-                    <FaCommentDots />
-                </IconButton>
-            </Tooltip>
-            <Tooltip title="Notifications" placement="bottom">
-                <IconButton className='icons'>
-                    <FaBell />
-                </IconButton>
-            </Tooltip>
-            <Dropdown/>
-        </div>
+      <div className='navbar-right'>
+        <Link to='/create'>
+          <Tooltip title="Create Post" placement="bottom">
+            <IconButton className='icons'>
+              <FaPlus />
+            </IconButton>
+          </Tooltip>
+        </Link>
+        <Tooltip title="Chat" placement="bottom">
+          <IconButton className='icons'>
+            <FaCommentDots />
+          </IconButton>
+        </Tooltip>
+        <Tooltip title="Notifications" placement="bottom">
+          <IconButton className='icons'>
+            <FaBell />
+          </IconButton>
+        </Tooltip>
+        <Dropdown />
+      </div>
     </div>
   );
 }

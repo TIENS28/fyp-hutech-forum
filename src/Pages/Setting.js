@@ -28,13 +28,8 @@ function Setting() {
     };
 
   return (
+    
     <div className='setting-flex-container'>
-        <nav className='setting-tabs'>
-            <ul className='setting-ul'>
-                <li className='setting-li' onClick={()=>updateToggle(1)}>Account</li>
-            </ul>
-            <hr className='setting-hr'/>
-      </nav>
 
       <div className={toggle === 1 ? "show-settingss" : "settingss"}>
           <h2 className='setting-h2'>Account</h2>
@@ -59,12 +54,6 @@ function Setting() {
                 <span className='setting-edit'><MdEdit /></span>
             </div>
             <hr className='setting-hr'/>
-            
-            <p className='setting-text'>DOB</p>
-            <div className='setting-information'>
-                <p className='setting-texts'>{user.DOB}</p>
-                <span className='setting-edit'><MdEdit /></span>
-            </div>
             <hr className='setting-hr'/>
 
             <div>

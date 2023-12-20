@@ -6,7 +6,6 @@ const UserContext = createContext();
 
 export const UserProvider = ({ children }) => {
   const [user, setUser] = useState(() => {
-    // Retrieve user data from localStorage on component mount
     const storedUser = localStorage.getItem('user');
     return storedUser ? JSON.parse(storedUser) : null;
   });
@@ -14,7 +13,6 @@ export const UserProvider = ({ children }) => {
   const setUserData = (userData) => {
     setUser(userData);
 
-    // Store user data in localStorage
     localStorage.setItem('user', JSON.stringify(userData));
   };
 
@@ -22,8 +20,10 @@ export const UserProvider = ({ children }) => {
     return () => localStorage.removeItem('user');
   }, []);
 
+  const contextValue = { user, setUserData }; // Include setUserData in the context value
+
   return (
-    <UserContext.Provider value={{ user, setUserData }}>
+    <UserContext.Provider value={contextValue}>
       {children}
     </UserContext.Provider>
   );

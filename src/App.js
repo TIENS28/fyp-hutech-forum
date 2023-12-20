@@ -13,6 +13,7 @@ import Save from './Pages/Save';
 import ForgotPassword from './Pages/ForgotPassword';
 import CreateAccount from './Pages/CreateAccount';
 import UpdateProfile from './Pages/UpdateProfile';
+import SearchPostList from './Pages/SearchPostList';
 
 function App() {
   const [isNavbarVisible, setIsNavbarVisible] = useState(false);
@@ -34,7 +35,7 @@ function App() {
           <Route path='/setting' element={<Setting />} />
           <Route path='/save' element={<Save />} />
           <Route path='/update' element={<UpdateProfile />} />
-          {/* Add other routes */}
+          <Route path='/search' element={<SearchPostList setIsNavbarVisible={setIsNavbarVisible} />}/>          
           <Route path='*' element={<Navigate to="/login" />} />
         </Routes>
       </Router>
