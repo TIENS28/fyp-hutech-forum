@@ -80,8 +80,8 @@ function CreateAccount() {
           />
           <input
             className='input-create-account'
-            type="date"
-            placeholder="Enter DOB"
+            type="text"
+            placeholder="DD/MM/YYYY"
             value={dob}
             onChange={(e) => setDOB(e.target.value)}
           />

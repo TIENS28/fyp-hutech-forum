@@ -6,6 +6,7 @@ import { useUser } from '../Components/UserContext';
 import { MdEdit } from "react-icons/md";
 import { FaSignOutAlt }    from "react-icons/fa";
 import { MdDelete } from "react-icons/md";
+import { FaHome } from "react-icons/fa";
 
 function Setting() {
     const { user } = useUser();
@@ -34,26 +35,18 @@ function Setting() {
       <div className={toggle === 1 ? "show-settingss" : "settingss"}>
           <h2 className='setting-h2'>Account</h2>
           <div className='form-setting'>
-            <p className='setting-text'>Full Name</p>
+            <p className='setting-text'>Email</p>
             <div className='setting-information'>
-                <p className='setting-texts'>{user.fullName}</p>
-                <span className='setting-edit'><MdEdit /></span>
-            </div>
-            <hr className='setting-hr'/>
-
-            <p className='setting-text'>DOB</p>
-            <div className='setting-information'>
-                <p className='setting-texts'>{user.DOB}</p>
-                <span className='setting-edit'><MdEdit /></span>
-            </div>
+            <p className='setting-texts'>{user.email}</p>
+            {/* <span className='setting-edit'><MdEdit /></span> */}
+          </div>
             <hr className='setting-hr'/>
 
             <p className='setting-text'>Password</p>
             <div className='setting-information'>
                 <p className='setting-texts'>{user.password}</p>
-                <span className='setting-edit'><MdEdit /></span>
+                {/* <span className='setting-edit'><MdEdit /></span> */}
             </div>
-            <hr className='setting-hr'/>
             <hr className='setting-hr'/>
 
             <div>
@@ -99,8 +92,14 @@ function Setting() {
                 <hr className='setting-hr'/>
               </div>
           </div>
-            <button onClick={()=>{navigate('/login', {replace:true})}}
-            className='bt-setting-logout'><FaSignOutAlt style={{ marginRight: '5px' }}/>Logout</button>
+          <div className='bt-settings'>
+        <button onClick={()=>{navigate('/homepage', {replace:true})}}
+                className='bt-setting-homepage'><FaHome style={{ marginRight: '5px' }}/>Homepage</button>
+        <button onClick={()=>{navigate('/login', {replace:true})}}
+                className='bt-setting-logout'><FaSignOutAlt style={{ marginRight: '5px' }}/>Logout</button>
+      </div>
+            {/* <button onClick={()=>{navigate('/login', {replace:true})}}
+            className='bt-setting-logout'><FaSignOutAlt style={{ marginRight: '5px' }}/>Logout</button> */}
             <button onClick={()=>handleDeleteAccount()}
                 className='bt-setting-delete'><MdDelete style={{ marginRight: '5px' }}/>
                 Delete Accont
