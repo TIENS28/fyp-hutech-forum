@@ -119,6 +119,17 @@ function AdminHomePage({ setIsNavbarVisible }) {
           postInfo={openComment}
         />
       )}
+    <div className='navbar-left'>
+        <img className='img-logoHUTECH' src="LogoHUTECH.jpg" alt="Logo"></img>
+        <h1
+          className='h1-HUTECH'
+          onClick={() => {
+            navigate('/homepage', { replace: true });
+          }}
+        >
+          HUTECH
+        </h1>
+      </div>
     <div className="personal-flex-container">
         <div className='personal-post'>
             <div className='create-post'>
