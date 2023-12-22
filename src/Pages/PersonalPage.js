@@ -3,6 +3,7 @@ import React, { useState, useEffect } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom'
 import { useUser } from '../Components/UserContext';
 import './PersonalPage.css'; 
+import './Homepage.css';
 import Header from '../Components/header'; 
 
 import { FaPlus } from "react-icons/fa";
@@ -12,8 +13,6 @@ import { FaRegComments }   from "react-icons/fa";
 import { FaHeart } from "react-icons/fa";
 import { FaRegStar }       from "react-icons/fa";
 import { AiFillHeart } from "react-icons/ai";
-
-import { FaEllipsisH } from "react-icons/fa";
 import EditPost from '../Components/EditPost';
 import Comment from '../Components/Comment';
 
@@ -28,7 +27,6 @@ function PersonalPage({ closeComment }) {
   const handleClick = () => {
     setIsLiked(!isLiked);
   };
-
   const [openModal, setOpenModal] = useState(false);
   useEffect(() => {
     if (openModal) {
@@ -41,7 +39,19 @@ function PersonalPage({ closeComment }) {
     };
   }, [openModal]);
 
-  const [openComment, setOpenComment] = useState(false);
+  const [openComment, setOpenComment] = useState(null);
+
+  const handleCommentClose = (postId) => {
+    setOpenComment(null);
+    
+    // Update the totalComments for the currend post
+    setUserPosts((prevPosts) =>
+      prevPosts.map((post) =>
+        post.id === postId ? { ...post, totalComments: post.totalComments + 1 } : post
+      )
+    );
+  };
+
   useEffect(() => {
     if (openComment) {
       document.body.style.overflow = 'hidden';
@@ -84,12 +94,39 @@ function PersonalPage({ closeComment }) {
 
     fetchUserPosts();
 }, []);
+  // delete post api
+  const handleDeletePost = async (postId) => {
+    try {
+      const token = localStorage.getItem('token');
+      const response = await fetch(`http://localhost:5001/api/auth/posts/deletePost/${postId}`, {
+        method: 'DELETE',
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
+
+      if (response.ok) {
+        setUserPosts((prevPosts) => prevPosts.filter((post) => post.id !== postId));
+
+        console.log('Post deleted successfully');
+      } else {
+        console.error('Error deleting post:', response.statusText);
+      }
+    } catch (error) {
+      console.error('Error deleting post:', error.message);
+    }
+  };
 
   return (
     <>
     <Header />
     {openModal && <EditPost closeModal={setOpenModal}/>}
-    {openComment && <Comment closeComment={setOpenComment}/>}
+    {openComment !== null && (
+        <Comment
+        closeComment={() => handleCommentClose(openComment.id)}          
+        postInfo={openComment}
+        />
+      )}
     <div className="personal-flex-container">
         <div className='personal-post'>
             <div className='create-post'>
@@ -102,12 +139,19 @@ function PersonalPage({ closeComment }) {
                         type="submit" 
                         value="create-post" >Create Post</button>
             </div>
+
             <div className="editor-content">
               {userPosts.map((post) => (
                 <div key={post.id} className="flex-container-home-user">
-                
                 <div className='editor-content'>
                 <div className='user-home-user'>
+                <button
+                  className="delete-post-btn"
+                  onClick={() => handleDeletePost(post.id)}
+                >
+                  Delete Post
+                </button>
+
                 <span className='user-date'>At: {new Date(post.createdDate).toLocaleDateString()}</span>
                 <span className='user-date'>{post.user.fullName}</span>
                 </div>
@@ -187,6 +231,7 @@ function PersonalPage({ closeComment }) {
             </div>
         </div>
     </div>
+    
     </>
   );
 }

@@ -17,7 +17,6 @@ function Comment({ closeComment, postInfo }) {
   const [isLiked, setIsLiked] = useState(false);
   const [commentText, setCommentText] = useState('');
   const [comments, setComments] = useState([]);
-
   const handleClick = () => {
     setIsLiked(!isLiked);
   };
@@ -47,8 +46,10 @@ function Comment({ closeComment, postInfo }) {
       });
 
       if (response.ok) {
+
         fetchComments();
         console.log('Comment submitted successfully');
+        
         setCommentText('');
       } else {
         console.error('Error submitting comment:', response.statusText);
@@ -62,6 +63,7 @@ function Comment({ closeComment, postInfo }) {
     fetchComments();
   }, [postInfo.id]);
 
+
   return (
     <div className='modalComment'>
       <div className='modalCommentContent'>
@@ -69,7 +71,8 @@ function Comment({ closeComment, postInfo }) {
           <div className='comment-user'>
             <h2>{postInfo.user.fullName} post </h2>
           </div>
-          <div className='comment-cancel' onClick={() => closeComment(false)}>
+          <div className='comment-cancel' 
+            onClick={() => closeComment(false)}>
             X
           </div>
         </div>
@@ -126,13 +129,11 @@ function Comment({ closeComment, postInfo }) {
                 <div className='comments-section'>
                   <h3>Comments</h3>
                   <div className='comment-input-area'>
-                    {/* Comment input area */}
                     <textarea className='textarea-input-comment'
                       placeholder='Write a comment...'
                       value={commentText}
                       onChange={(e) => setCommentText(e.target.value)}
                     />
-                    {/* Button to submit the comment */}
                     <button className='bt-submit-comment'onClick={handleCommentSubmit}>Submit Comment</button>
                   </div>
                   <ul>

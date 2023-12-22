@@ -144,8 +144,8 @@ function Homepage({ setIsNavbarVisible }) {
             </div>
               <h1>{post.title}</h1>
               {post.description && <p>{post.description}</p>}
-              {post.thumbnail && <img src={post.thumbnail} alt="Post Thumbnail" style={{ width: '600px', height: '400px' }} />}
               {post.content && <p dangerouslySetInnerHTML={renderContent(post.content)}></p>}
+              {post.thumbnailUrl && <img src={post.thumbnailUrl} alt="Post Thumbnail" style={{ width: '600px', height: '400px' }} />}
               <div className='home-interactions'>
                 <AiFillHeart className='number-interaction' />
                 <span className='numbers-comments-interaction'>{post.totalComments} Comments</span>
