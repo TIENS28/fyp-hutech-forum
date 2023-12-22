@@ -1,4 +1,3 @@
-// Upload.js
 import React, { useState } from 'react';
 import { FaCloudUploadAlt, FaFileImage } from "react-icons/fa";
 import { MdDelete } from "react-icons/md";

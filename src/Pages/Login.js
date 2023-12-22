@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import './Login.css';
 
@@ -31,7 +31,12 @@ function Login() {
         if (userResponse.ok) {
           const userData = await userResponse.json();
           setUserData(userData);
-          navigate('/homepage', { replace: true });
+
+          if (userData.role.roleCode === 'ADMIN') {
+            navigate('/admin/home', { replace: true });
+          } else {
+            navigate('/homepage', { replace: true });
+          }
         } else {
           console.error('Failed to fetch user data.');
         }

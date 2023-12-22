@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import './Navbar.css';
-
+import { useUser } from '../Components/UserContext';
 import { FaPlus, FaCommentDots, FaBell, FaSearch } from 'react-icons/fa';
 import IconButton from '@mui/material/IconButton';
 import Tooltip from '@mui/material/Tooltip';
@@ -10,12 +10,21 @@ import Dropdown from './Dropdown';
 function Navbar() {
   const navigate = useNavigate();
   const [searchQuery, setSearchQuery] = useState('');
+  const { user } = useUser();
 
   const handleSearch = () => {
-    // Redirect to the SearchPostList page with the search query
-    navigate(`/search?query=${encodeURIComponent(searchQuery)}`);
+    const isAdmin = user?.role?.roleCode === 'ADMIN';
+    let searchUrl;
+    if (isAdmin) {
+      searchUrl = `/admin/search?query=${encodeURIComponent(searchQuery)}`;
+    } else {
+      searchUrl = `/search?query=${encodeURIComponent(searchQuery)}`;
+    }
+    console.log('Search URL:', searchUrl);
+    navigate(searchUrl);
   };
 
+  
   return (
     <div className='navbar'>
       <div className='navbar-left'>

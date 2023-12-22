@@ -2,13 +2,10 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom'
 import { useUser } from '../Components/UserContext';
-import './PersonalPage.css'; 
 import './Homepage.css';
 import Header from '../Components/header'; 
-
 import { FaPlus } from "react-icons/fa";
 import { IoSettingsSharp } from "react-icons/io5";
-
 import { FaRegComments }   from "react-icons/fa";
 import { FaHeart } from "react-icons/fa";
 import { FaRegStar }       from "react-icons/fa";
@@ -16,7 +13,7 @@ import { AiFillHeart } from "react-icons/ai";
 import EditPost from '../Components/EditPost';
 import Comment from '../Components/Comment';
 
-function AdminHome({ closeComment }) {
+function AdminHomePage({ setIsNavbarVisible }) {
   const { user } = useUser();
   const navigate = useNavigate();
   const location = useLocation();
@@ -25,13 +22,19 @@ function AdminHome({ closeComment }) {
   const [isLiked, setIsLiked] = useState(false);
   const [allPosts, setAllPosts] = useState([]);
   const [openComment, setOpenComment] = useState(null);
-  const [userPosts, setUserPosts] = useState([]);
+  const [openModal, setOpenModal] = useState(false);
 
-  console.log('User Data:', user);
+  useEffect(() => {
+    setIsNavbarVisible(true);
+    return () => {
+      setIsNavbarVisible(false);
+    };
+  }, [setIsNavbarVisible]);
+
   const handleClick = () => {
     setIsLiked(!isLiked);
   };
-  const [openModal, setOpenModal] = useState(false);
+
   useEffect(() => {
     if (openModal) {
       document.body.style.overflow = 'hidden';
@@ -47,8 +50,7 @@ function AdminHome({ closeComment }) {
   const handleCommentClose = (postId) => {
     setOpenComment(null);
     
-    // Update the totalComments for the currend post
-    setUserPosts((prevPosts) =>
+    setAllPosts((prevPosts) =>
       prevPosts.map((post) =>
         post.id === postId ? { ...post, totalComments: post.totalComments + 1 } : post
       )
@@ -97,7 +99,7 @@ function AdminHome({ closeComment }) {
       });
 
       if (response.ok) {
-        setUserPosts((prevPosts) => prevPosts.filter((post) => post.id !== postId));
+        setAllPosts((prevPosts) => prevPosts.filter((post) => post.id !== postId));
 
         console.log('Post deleted successfully');
       } else {
@@ -110,12 +112,11 @@ function AdminHome({ closeComment }) {
 
   return (
     <>
-    <Header />
-    {openModal && <EditPost closeModal={setOpenModal}/>}
+    {openModal && <EditPost closeModal={setOpenModal} />}
     {openComment !== null && (
         <Comment
-        closeComment={() => handleCommentClose(openComment.id)}          
-        postInfo={openComment}
+          closeComment={() => setOpenComment(null)}
+          postInfo={openComment}
         />
       )}
     <div className="personal-flex-container">
@@ -137,6 +138,12 @@ function AdminHome({ closeComment }) {
                     
                     <div className='editor-content'>
                     <div className='user-home-user'>
+                    <button
+                        className="delete-post-btn"
+                        onClick={() => handleDeletePost(post.id)}
+                        >
+                        Delete Post
+                    </button>
                     <span className='user-date'>At: {new Date(post.createdDate).toLocaleDateString()}</span>
                     <span className='user-date'>{post.user.fullName}</span>
                     </div>
@@ -220,4 +227,4 @@ function AdminHome({ closeComment }) {
   );
 }
 
-export default AdminHome;
+export default AdminHomePage;

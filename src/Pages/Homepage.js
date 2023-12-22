@@ -7,26 +7,27 @@ import { FaRegComments } from 'react-icons/fa';
 import { FaHeart } from 'react-icons/fa';
 import { FaRegStar } from 'react-icons/fa';
 import { AiFillHeart } from 'react-icons/ai';
-
 import EditPost from '../Components/EditPost';
 import Comment from '../Components/Comment';
 
 function Homepage({ setIsNavbarVisible }) {
   const navigate = useNavigate();
   const { user } = useUser();
+  const location = useLocation();
+  const { editorData, uploadedImage } = location.state || {};
+  const hasPostData = editorData || uploadedImage;
 
+  const [likedStates, setLikedStates] = useState({});
+  const [openModal, setOpenModal] = useState(false);
+  const [openComment, setOpenComment] = useState(null);
+  const [allPosts, setAllPosts] = useState([]);
+  
   useEffect(() => {
     setIsNavbarVisible(true);
     return () => {
       setIsNavbarVisible(false);
     };
   }, [setIsNavbarVisible]);
-
-  const location = useLocation();
-  const { editorData, uploadedImage } = location.state || {};
-  const hasPostData = editorData || uploadedImage;
-
-  const [likedStates, setLikedStates] = useState({});
 
   const handleClick = (postId) => {
     setLikedStates((prevStates) => ({
@@ -35,7 +36,6 @@ function Homepage({ setIsNavbarVisible }) {
     }));
   };
 
-  const [openModal, setOpenModal] = useState(false);
   useEffect(() => {
     if (openModal) {
       document.body.style.overflow = 'hidden';
@@ -47,7 +47,6 @@ function Homepage({ setIsNavbarVisible }) {
     };
   }, [openModal]);
 
-  const [openComment, setOpenComment] = useState(null);
   useEffect(() => {
     if (openComment) {
       document.body.style.overflow = 'hidden';
@@ -59,7 +58,6 @@ function Homepage({ setIsNavbarVisible }) {
     };
   }, [openComment]);
 
-  const [allPosts, setAllPosts] = useState([]);
 
   useEffect(() => {
     const fetchAllPosts = async () => {

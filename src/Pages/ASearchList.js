@@ -51,31 +51,76 @@ function ASearchList({ setIsNavbarVisible }) {
     return { __html: content.replace(/(?:\r\n|\r|\n)/g, '<br>') };
   };
 
+  const handleCommentClose = (postId) => {
+    setOpenComment(null);
+    setSearchResults((prevResults) => ({
+      ...prevResults,
+      content: prevResults.content.map((post) =>
+        post.id === postId ? { ...post, totalComments: post.totalComments + 1 } : post
+      ),
+    }));
+  };
+
+  const handleDeletePost = async (postId) => {
+    try {
+      const token = localStorage.getItem('token');
+      const response = await fetch(`http://localhost:5001/api/auth/posts/deletePost/${postId}`, {
+        method: 'DELETE',
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
+
+      if (response.ok) {
+        setSearchResults((prevResults) => ({
+            ...prevResults,
+            content: prevResults.content.filter((post) => post.id !== postId),
+          }));
+        console.log('Post deleted successfully');
+      } else {
+        console.error('Error deleting post:', response.statusText);
+      }
+    } catch (error) {
+      console.error('Error deleting post:', error.message);
+    }
+  };
+
   return (
     <>
       {openModal && <EditPost closeModal={() => setOpenModal(false)} />}
-      {openComment !== null && <Comment closeComment={() => setOpenComment(null)} postInfo={openComment} />}
-
+        {openComment !== null && (
+        <Comment
+        closeComment={() => handleCommentClose(openComment.id)}          
+        postInfo={openComment}
+        />
+      )}
       <div className="home-flex-container">
         <div className="home-flex-container">
           {searchResults?.content?.map((post) => (
             <div key={post.id} className="flex-container-home-user">
               <div className="editor-content">
                 <div className="user-home-user">
+                    <button
+                        className="delete-post-btn"
+                        onClick={() => handleDeletePost(post.id)}
+                        >
+                        Delete Post
+                    </button>
                   <span className="user-date">At: {new Date(post.createdDate).toLocaleDateString()}</span>
                   <span className="user-date">{post.user.fullName}</span>
                 </div>
                 <h1>{post.title}</h1>
                 {post.description && <p>{post.description}</p>}
-                {post.thumbnail && (
+
+                {post.content && (
+                  <p dangerouslySetInnerHTML={renderContent(post.content)}></p>
+                )}
+                {post.thumbnailUrl && (
                   <img
-                    src={post.thumbnail}
+                    src={post.thumbnailUrl}
                     alt="Post Thumbnail"
                     style={{ width: '600px', height: '400px' }}
                   />
-                )}
-                {post.content && (
-                  <p dangerouslySetInnerHTML={renderContent(post.content)}></p>
                 )}
                 <div className="home-interactions">
                   <AiFillHeart className="number-interaction" />
@@ -105,7 +150,7 @@ function ASearchList({ setIsNavbarVisible }) {
           <button className='bt-search'
             disabled={searchResults?.number === 0}
             onClick={() => {
-              navigate(`/search?page=${searchResults?.number - 1}&query=${searchQuery}`);
+              navigate(`/admin/search?page=${searchResults?.number - 1}&query=${searchQuery}`);
             }}>
             Previous
           </button>
@@ -115,7 +160,7 @@ function ASearchList({ setIsNavbarVisible }) {
           <button className='bt-search'
             disabled={searchResults?.number === searchResults?.totalPages - 1}
             onClick={() => {
-              navigate(`/search?page=${searchResults?.number + 1}&query=${searchQuery}`);
+              navigate(`/admin/search?page=${searchResults?.number + 1}&query=${searchQuery}`);
             }}>
             Next
           </button>

@@ -23,11 +23,13 @@ function PersonalPage({ closeComment }) {
   const { editorData, uploadedImage } = location.state || {};
   const [likedStates, setLikedStates] = useState({});
   const [isLiked, setIsLiked] = useState(false);
-  console.log('User Data:', user);
+  const [openComment, setOpenComment] = useState(null);
+  const [openModal, setOpenModal] = useState(false);
+  const [userPosts, setUserPosts] = useState([]);
+
   const handleClick = () => {
     setIsLiked(!isLiked);
   };
-  const [openModal, setOpenModal] = useState(false);
   useEffect(() => {
     if (openModal) {
       document.body.style.overflow = 'hidden';
@@ -39,7 +41,6 @@ function PersonalPage({ closeComment }) {
     };
   }, [openModal]);
 
-  const [openComment, setOpenComment] = useState(null);
 
   const handleCommentClose = (postId) => {
     setOpenComment(null);
@@ -68,7 +69,6 @@ function PersonalPage({ closeComment }) {
     return { __html: content.replace(/(?:\r\n|\r|\n)/g, '<br>') };
   };
 
-  const [userPosts, setUserPosts] = useState([]);
 
   useEffect(() => {
     const fetchUserPosts = async () => {

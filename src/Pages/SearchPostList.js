@@ -51,11 +51,25 @@ function SearchPostList({ setIsNavbarVisible }) {
     return { __html: content.replace(/(?:\r\n|\r|\n)/g, '<br>') };
   };
 
+  const handleCommentClose = (postId) => {
+    setOpenComment(null);
+    
+    setSearchResults((prevPosts) =>
+      prevPosts.map((post) =>
+        post.id === postId ? { ...post, totalComments: post.totalComments + 1 } : post
+      )
+    );
+  };
+
   return (
     <>
       {openModal && <EditPost closeModal={() => setOpenModal(false)} />}
-      {openComment !== null && <Comment closeComment={() => setOpenComment(null)} postInfo={openComment} />}
-
+      {openComment !== null && (
+        <Comment
+        closeComment={() => handleCommentClose(openComment.id)}          
+        postInfo={openComment}
+        />
+      )}
       <div className="home-flex-container">
         <div className="home-flex-container">
           {searchResults?.content?.map((post) => (
@@ -67,15 +81,16 @@ function SearchPostList({ setIsNavbarVisible }) {
                 </div>
                 <h1>{post.title}</h1>
                 {post.description && <p>{post.description}</p>}
-                {post.thumbnail && (
+                
+                {post.content && (
+                  <p dangerouslySetInnerHTML={renderContent(post.content)}></p>
+                )}
+                {post.thumbnailUrl && (
                   <img
-                    src={post.thumbnail}
+                    src={post.thumbnailUrl}
                     alt="Post Thumbnail"
                     style={{ width: '600px', height: '400px' }}
                   />
-                )}
-                {post.content && (
-                  <p dangerouslySetInnerHTML={renderContent(post.content)}></p>
                 )}
                 <div className="home-interactions">
                   <AiFillHeart className="number-interaction" />
