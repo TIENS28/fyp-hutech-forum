@@ -13,6 +13,7 @@ import { FaRegComments }   from "react-icons/fa";
 import { FaHeart } from "react-icons/fa";
 import { FaRegStar }       from "react-icons/fa";
 import { AiFillHeart } from "react-icons/ai";
+import { MdDelete } from "react-icons/md";
 import EditPost from '../Components/EditPost';
 import Comment from '../Components/Comment';
 
@@ -148,7 +149,7 @@ function PersonalPage({ closeComment }) {
                 <button
                   className="delete-post-btn"
                   onClick={() => handleDeletePost(post.id)}
-                >
+                > <MdDelete style={{ marginRight: '5px' }}/>
                   Delete Post
                 </button>
 

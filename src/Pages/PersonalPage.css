@@ -165,3 +165,17 @@
     margin: 10px;
     cursor: pointer;
 }
+
+.delete-post-btn {
+    border: 1px solid black;
+    border-radius: 50px;
+    text-align: center;
+    background: none;
+    padding: 5px;
+}
+
+.delete-post-btn:hover {
+    border: 1px solid red;
+    cursor: pointer;
+    color: red;
+}
