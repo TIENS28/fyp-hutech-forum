@@ -176,17 +176,14 @@ function PersonalPage({ closeComment }) {
                     <FaRegComments
                           className="FaRegComments"
                           onClick={() => setOpenComment(post)}
-                        />
-                    
+                        />                   
                     <FaRegStar className="FaRegStar" />
-                    
                   </div>
                 </div>
               </div>
             ))}
           </div>
         </div>
-        
         
         <div className='form-personal'>
             <div className='personal'>

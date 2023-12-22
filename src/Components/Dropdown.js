@@ -35,7 +35,7 @@ function Dropdown() {
           </li>
           <li className='dropdownItem'>
             <span className='Icon-text-dropdown'> <FaRegEdit/> </span>
-            <Link to='/Setting'> Edit Profile </Link>
+            <Link to='/update'> Edit Profile </Link>
           </li>
           <li className='dropdownItem'>
             <span className='Icon-text-dropdown'> <HiOutlineCog6Tooth/> </span>

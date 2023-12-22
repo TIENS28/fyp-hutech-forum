@@ -21,12 +21,22 @@ function Navbar() {
     <div className='navbar'>
       <div className='navbar-left'>
         {/* Replace the logo with a button that navigates to the homepage */}
-        <FaHome
+        {/* <FaHome
           className='homepage-button'
           onClick={() => {
             navigate('/homepage', { replace: true });
           }}
-        />
+        /> */}
+        
+        <img className='img-logoHUTECH' src="LogoHUTECH.jpg" alt="Logo"></img>
+        <h1
+          className='h1-HUTECH'
+          onClick={() => {
+            navigate('/homepage', { replace: true });
+          }}
+        >
+          HUTECH
+        </h1>
       </div>
 
       <div className='navbar-center'>

@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
-import './Homepage.css';
+import './SearchPostList.css';
 import { useUser } from '../Components/UserContext';
 import { FaRegComments } from 'react-icons/fa';
 import { FaHeart, FaRegStar } from 'react-icons/fa';
@@ -102,7 +102,7 @@ function SearchPostList({ setIsNavbarVisible }) {
         </div>
 
         <div className="pagination-controls">
-          <button
+          <button className='bt-search'
             disabled={searchResults?.number === 0}
             onClick={() => {
               navigate(`/search?page=${searchResults?.number - 1}&query=${searchQuery}`);
@@ -112,7 +112,7 @@ function SearchPostList({ setIsNavbarVisible }) {
           <span>
             Page {searchResults?.number + 1} of {searchResults?.totalPages}
           </span>
-          <button
+          <button className='bt-search'
             disabled={searchResults?.number === searchResults?.totalPages - 1}
             onClick={() => {
               navigate(`/search?page=${searchResults?.number + 1}&query=${searchQuery}`);
