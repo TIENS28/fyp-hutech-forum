@@ -108,7 +108,7 @@ function CreatePost() {
             type="file"
             accept=".jpg, .jpeg, .png"
           onChange={handleThumbnailChange}
-          />  
+          />
           {thumbnailPreview && (
           <img
             src={thumbnailPreview}
