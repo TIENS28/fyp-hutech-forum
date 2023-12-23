@@ -77,13 +77,23 @@ function Homepage({ setIsNavbarVisible }) {
     return { __html: content.replace(/(?:\r\n|\r|\n)/g, '<br>') };
   };
 
+  const handleCommentClose = (postId) => {
+    setOpenComment(null);
+    
+    setAllPosts((prevPosts) =>
+      prevPosts.map((post) =>
+        post.id === postId ? { ...post, totalComments: post.totalComments + 1 } : post
+      )
+    );
+  };
+
   return (
     <>
       {openModal && <EditPost closeModal={setOpenModal} />}
       {openComment !== null && (
         <Comment
-          closeComment={() => setOpenComment(null)}
-          postInfo={openComment}
+        closeComment={() => handleCommentClose(openComment.id)}          
+        postInfo={openComment}
         />
       )}
       <div className="home-flex-container">

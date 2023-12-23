@@ -88,7 +88,7 @@ function ASearchList({ setIsNavbarVisible }) {
   return (
     <>
       {openModal && <EditPost closeModal={() => setOpenModal(false)} />}
-        {openComment !== null && (
+      {openComment !== null && (
         <Comment
         closeComment={() => handleCommentClose(openComment.id)}          
         postInfo={openComment}

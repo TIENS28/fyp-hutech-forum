@@ -15,7 +15,7 @@ function UpdateProfile() {
     firstName: user.firstName,
     lastName: user.lastName,
     email: user.email,
-    dob: user.dob,
+    DOB: user.dob,
     department: user.department,
     studentID: user.studentID,
     avatarUrl: user.avatarUrl,
@@ -36,7 +36,7 @@ function UpdateProfile() {
       formData.append('firstName', updatedUser.firstName);
       formData.append('lastName', updatedUser.lastName);
       formData.append('email', updatedUser.email);
-      formData.append('dob', updatedUser.dob);
+      formData.append('DOB', updatedUser.dob);
       formData.append('department', updatedUser.department);
       formData.append('studentID', updatedUser.studentID);
       formData.append('avatar', updatedUser.avatar);

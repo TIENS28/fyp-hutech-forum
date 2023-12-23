@@ -115,8 +115,8 @@ function AdminHomePage({ setIsNavbarVisible }) {
     {openModal && <EditPost closeModal={setOpenModal} />}
     {openComment !== null && (
         <Comment
-          closeComment={() => setOpenComment(null)}
-          postInfo={openComment}
+        closeComment={() => handleCommentClose(openComment.id)}          
+        postInfo={openComment}
         />
       )}
     <div className="personal-flex-container">

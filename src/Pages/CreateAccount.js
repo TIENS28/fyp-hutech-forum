@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import './CreateAccount.css';
 import { Link, useHistory, NavLink } from 'react-router-dom';
+import { MdDoorBack } from 'react-icons/md';
 
 function CreateAccount() {
   const formData = new FormData();
@@ -21,7 +22,7 @@ function CreateAccount() {
     formData.append('lastName', lastName);
     formData.append('email', email);
     formData.append('password', password);
-    formData.append('dob', dob);
+    formData.append('DOB', dob);
     formData.append('department', department);
     formData.append('studentID', studentID);
     formData.append('avatar', avatar);
