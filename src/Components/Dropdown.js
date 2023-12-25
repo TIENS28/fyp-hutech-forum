@@ -1,5 +1,5 @@
 import React, {useState} from 'react';
-import { Link } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom';
 import './Dropdown.css';
 import { useUser } from '../Components/UserContext';
 import { FaChevronDown } from "react-icons/fa";
@@ -12,14 +12,21 @@ import { FaSignOutAlt }    from "react-icons/fa";
 
 function Dropdown() {
   const { user } = useUser();
-  console.log('User Data:', user);
-    const [open, setOpen] = useState(false)
+  const [open, setOpen] = useState(false)
+  const navigate = useNavigate();
+
+  const handlePersonalPageClick = () => {
+    if (user.role.roleCode === 'ADMIN') {
+      navigate('/admin/home', { replace: true });
+    } else {
+      navigate('/personal', { replace: true });
+    }
+  };
 
   return (
     <div className="Dropdowss">
     <div className='menu-container'>
       <div className='menu-trigger' >
-        {/* <img className='img-username' src="Yone.jpg" alt="Avatar"></img> */}
         <img className='img-username'
                   src={user.avatarUrl} 
                   alt="Avatar"
@@ -29,22 +36,26 @@ function Dropdown() {
       <div className={`dropdown-menu ${open ? 'active' : 'inactive'}`}>
         <h3>HUTECH FORUM<br/><span>Final Year Project</span></h3>
         <ul>
-          <li className='dropdownItem'>
-            <span className='Icon-text-dropdown'> <FaRegUserCircle/> </span>
-            <Link to='/personal'> Personal Page </Link>
+          <li className='dropdownItem' onClick={handlePersonalPageClick}>
+              <span className='Icon-text-dropdown'> <FaRegUserCircle /> </span>
+              <span style={{ cursor: 'pointer' }}> Personal Page </span>
           </li>
+
           <li className='dropdownItem'>
             <span className='Icon-text-dropdown'> <FaRegEdit/> </span>
             <Link to='/update'> Edit Profile </Link>
           </li>
+
           <li className='dropdownItem'>
             <span className='Icon-text-dropdown'> <HiOutlineCog6Tooth/> </span>
             <Link to='/setting'> Setting </Link>
           </li>
+
           <li className='dropdownItem'>
             <span className='Icon-text-dropdown'> <FaRegQuestionCircle/> </span>
             <Link to='/setting'> Helps </Link>
           </li>
+          
           <li className='dropdownItem'>
             <span className='Icon-text-dropdown'> <AiOutlineFileExclamation/> </span>
             <Link to='/setting'> Contribute Opinions </Link>

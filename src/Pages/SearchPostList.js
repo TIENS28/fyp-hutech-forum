@@ -18,6 +18,7 @@ function SearchPostList({ setIsNavbarVisible }) {
   const [openModal, setOpenModal] = useState(false);
   const [openComment, setOpenComment] = useState(null);
   const [searchResults, setSearchResults] = useState([]);
+  const token = localStorage.getItem('token');
 
   useEffect(() => {
     setIsNavbarVisible(true);
@@ -36,7 +37,14 @@ function SearchPostList({ setIsNavbarVisible }) {
   useEffect(() => {
     const fetchSearchResults = async () => {
       try {
-        const response = await fetch(`http://localhost:5001/api/auth/posts/searchPost/${searchQuery}?page=${pageNumber}`);
+        const response = await fetch(`http://localhost:5001/api/auth/posts/searchPost/${searchQuery}?page=${pageNumber}`,
+        {
+          method: 'GET',
+          headers: {
+            'Authorization': `Bearer ${token}`,
+          }
+        }
+        );
         const data = await response.json();
         setSearchResults(data);
       } catch (error) {
@@ -51,16 +59,31 @@ function SearchPostList({ setIsNavbarVisible }) {
     return { __html: content.replace(/(?:\r\n|\r|\n)/g, '<br>') };
   };
 
-  const handleCommentClose = (postId) => {
+  const handleCommentClose = async (postId) => {
+    try {
+      const response = await fetch(`http://localhost:5001/api/auth/posts/post/${postId}`, {
+        method: "GET",
+        headers: {
+          'Authorization': `Bearer ${token}`,
+        },
+      });
+  
+      if (response.ok) {
+        const updatedPost = await response.json();
+        setSearchResults((prevPosts) =>
+          prevPosts.map((post) =>
+            post.id === postId ? { ...post, totalComments: updatedPost.totalComments } : post
+          )
+        );
+      } else {
+        console.error('Failed to fetch updated post data:', response.statusText);
+      }
+    } catch (error) {
+      console.error('Error fetching updated post data:', error);
+    }
+  
     setOpenComment(null);
-    
-    setSearchResults((prevPosts) =>
-      prevPosts.map((post) =>
-        post.id === postId ? { ...post, totalComments: post.totalComments + 1 } : post
-      )
-    );
   };
-
   return (
     <>
       {openModal && <EditPost closeModal={() => setOpenModal(false)} />}
@@ -100,11 +123,6 @@ function SearchPostList({ setIsNavbarVisible }) {
                   <hr className="home-hr" />
                 </div>
                 <div className="interaction">
-                  <FaHeart
-                    className="FaHeart"
-                    onClick={() => handleClick(post.id.toString())}
-                    style={{ color: likedStates[post.id.toString()] ? 'DeepPink' : 'Black' }}
-                  />
                   <FaRegComments
                     className="FaRegComments"
                     onClick={() => setOpenComment(post)}

@@ -4,7 +4,8 @@ const AuthContext = createContext();
 
 export const AuthProvider = ({ children }) => {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
-  
+  const token = localStorage.getItem('token');
+
   const login = async (email, password) => {
     try {
       const response = await fetch('http://localhost:5001/api/auth/login', {
@@ -17,7 +18,7 @@ export const AuthProvider = ({ children }) => {
           password: password,
         }),
       });
-  
+      
       if (response.ok) {
         const data = await response.json();
         const token = data.token;

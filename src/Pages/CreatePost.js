@@ -50,13 +50,12 @@ function CreatePost() {
         body: formData,
       });
   
-      if (!response.ok) {
+      if (response.ok) {
+        navigate('/homepage', { replace: true });
+      }
+      else{
         throw new Error('Failed to save post');
       }
-  
-      const result = await response.json();
-      console.log('Post saved successfully:', result);
-      navigate('/homepage', { replace: true });
     } catch (error) {
       console.error('Error saving post:', error.message);
       setError('Failed to save post. Please try again.');

@@ -13,15 +13,23 @@ function Setting() {
     const [toggle, setToggle] = useState(1);
     const label = { inputProps: { 'aria-label': 'Switch demo' } };
     const navigate = useNavigate();
-    console.log(user);
+    const token = localStorage.getItem('token');
+
     function updateToggle(id) {
       setToggle(id)
     }
 
     const handleDeleteAccount = async () => {
       try {
-        await axios.delete(`http://localhost:5001/api/auth/users/deleteUser/${user.id}`);
-    
+        await axios.delete(`http://localhost:5001/api/auth/users/deleteUser/${user.id}`,
+        {
+          method: 'DELETE',
+          headers: {
+            'Authorization': `Bearer ${token}`,
+          },
+          
+        }  
+      );
         navigate('/login', { replace: true });
       } catch (error) {
         console.error('Error deleting account:', error);

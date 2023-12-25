@@ -14,12 +14,9 @@ function Comment({ closeComment, postInfo }) {
   const hasPostData = editorData || uploadedImage;
 
   const { user } = useUser();
-  const [isLiked, setIsLiked] = useState(false);
   const [commentText, setCommentText] = useState('');
   const [comments, setComments] = useState([]);
-  const handleClick = () => {
-    setIsLiked(!isLiked);
-  };
+
 
   const fetchComments = async () => {
     try {
@@ -44,9 +41,9 @@ function Comment({ closeComment, postInfo }) {
           content: commentText,
         }),
       });
-
+  
       if (response.ok) {
-
+        postInfo.totalComments += 1;  
         fetchComments();
         console.log('Comment submitted successfully');
         
@@ -58,7 +55,7 @@ function Comment({ closeComment, postInfo }) {
       console.error('Error submitting comment:', error.message);
     }
   };
-
+  
   useEffect(() => {
     fetchComments();
   }, [postInfo.id]);
@@ -112,20 +109,12 @@ function Comment({ closeComment, postInfo }) {
                 <div className='home-interactions'>
                   <AiFillHeart className='number-interaction' />
                   <span className='numbers-interaction'>{postInfo.totalLikes}</span>
-                  <span className='numbers-comments-interaction'>{comments.length} Comments</span>
+                  <span className='numbers-comments-interaction'>{postInfo.totalComments} Comments</span>
                 </div>
                 <div>
                   <hr className='home-hr' />
                 </div>
-                <div className='interaction'>
-                  <FaHeart
-                    className='FaHeart'
-                    onClick={handleClick}
-                    style={{ color: isLiked ? 'DeepPink' : 'Black' }}
-                  />
-                  <FaRegComments className='FaRegComments' />
-                  <FaRegStar className='FaRegStar' />
-                </div>
+
                 <div className='comments-section'>
                   <h3>Comments</h3>
                   <div className='comment-input-area'>

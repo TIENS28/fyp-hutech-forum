@@ -112,7 +112,7 @@ function CreateAccount() {
         </form>
         {status !== null && (
           <div className={status ? 'success-message' : 'error-message'}>
-            {status ? 'Please active account in your email  '  : 'Failed to create account. Email is already bound to another account  '}
+            {status ? 'Please active account in your email  '  : 'Failed to create account. '}
             <NavLink className='forgot-password' to='/login'>
                  Login
             </NavLink>

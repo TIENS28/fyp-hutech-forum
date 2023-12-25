@@ -23,6 +23,7 @@ function AdminHomePage({ setIsNavbarVisible }) {
   const [allPosts, setAllPosts] = useState([]);
   const [openComment, setOpenComment] = useState(null);
   const [openModal, setOpenModal] = useState(false);
+  const token = localStorage.getItem('token');
 
   useEffect(() => {
     setIsNavbarVisible(true);
@@ -47,15 +48,32 @@ function AdminHomePage({ setIsNavbarVisible }) {
   }, [openModal]);
 
 
-  const handleCommentClose = (postId) => {
+  const handleCommentClose = async (postId) => {
+    try {
+      const response = await fetch(`http://localhost:5001/api/auth/posts/post/${postId}`, {
+        method: "GET",
+        headers: {
+          'Authorization': `Bearer ${token}`,
+        },
+      });
+  
+      if (response.ok) {
+        const updatedPost = await response.json();
+        setAllPosts((prevPosts) =>
+          prevPosts.map((post) =>
+            post.id === postId ? { ...post, totalComments: updatedPost.totalComments } : post
+          )
+        );
+      } else {
+        console.error('Failed to fetch updated post data:', response.statusText);
+      }
+    } catch (error) {
+      console.error('Error fetching updated post data:', error);
+    }
+  
     setOpenComment(null);
-    
-    setAllPosts((prevPosts) =>
-      prevPosts.map((post) =>
-        post.id === postId ? { ...post, totalComments: post.totalComments + 1 } : post
-      )
-    );
   };
+  
 
   useEffect(() => {
     if (openComment) {
@@ -73,24 +91,28 @@ function AdminHomePage({ setIsNavbarVisible }) {
     return { __html: content.replace(/(?:\r\n|\r|\n)/g, '<br>') };
   };
 
-  useEffect(() => {
-    const fetchAllPosts = async () => {
-      try {
-        const response = await fetch('http://localhost:5001/api/auth/posts/admin/posts');
-        const data = await response.json();
-        setAllPosts(data);
-      } catch (error) {
-        console.error('Error fetching posts:', error);
-      }
-    };
+  const fetchAllPosts = async () => {
+    try {
+      const response = await fetch('http://localhost:5001/api/auth/posts/allPost', {
+        method: "GET",
+        headers: {
+          'Authorization': `Bearer ${token}`,
+        }
+      });
+      const data = await response.json();
+      setAllPosts(data);
+    } catch (error) {
+      console.error('Error fetching posts:', error);
+    }
+  };
 
+  useEffect(() => {
     fetchAllPosts();
   }, []);
 
   // delete post api
   const handleDeletePost = async (postId) => {
     try {
-      const token = localStorage.getItem('token');
       const response = await fetch(`http://localhost:5001/api/auth/posts/deletePost/${postId}`, {
         method: 'DELETE',
         headers: {

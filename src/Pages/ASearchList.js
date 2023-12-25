@@ -18,6 +18,7 @@ function ASearchList({ setIsNavbarVisible }) {
   const [openModal, setOpenModal] = useState(false);
   const [openComment, setOpenComment] = useState(null);
   const [searchResults, setSearchResults] = useState([]);
+  const token = localStorage.getItem('token');
 
   useEffect(() => {
     setIsNavbarVisible(true);
@@ -36,7 +37,13 @@ function ASearchList({ setIsNavbarVisible }) {
   useEffect(() => {
     const fetchSearchResults = async () => {
       try {
-        const response = await fetch(`http://localhost:5001/api/auth/posts/searchPost/${searchQuery}?page=${pageNumber}`);
+        const response = await fetch(`http://localhost:5001/api/auth/posts/searchPost/${searchQuery}?page=${pageNumber}`,
+        {
+          method: "GET",
+          headers: {
+            'Authorization': `Bearer ${token}`,
+          }
+        });
         const data = await response.json();
         setSearchResults(data);
       } catch (error) {
@@ -51,14 +58,30 @@ function ASearchList({ setIsNavbarVisible }) {
     return { __html: content.replace(/(?:\r\n|\r|\n)/g, '<br>') };
   };
 
-  const handleCommentClose = (postId) => {
+  const handleCommentClose = async (postId) => {
+    try {
+      const response = await fetch(`http://localhost:5001/api/auth/posts/post/${postId}`, {
+        method: "GET",
+        headers: {
+          'Authorization': `Bearer ${token}`,
+        },
+      });
+  
+      if (response.ok) {
+        const updatedPost = await response.json();
+        setSearchResults((prevPosts) =>
+          prevPosts.map((post) =>
+            post.id === postId ? { ...post, totalComments: updatedPost.totalComments } : post
+          )
+        );
+      } else {
+        console.error('Failed to fetch updated post data:', response.statusText);
+      }
+    } catch (error) {
+      console.error('Error fetching updated post data:', error);
+    }
+  
     setOpenComment(null);
-    setSearchResults((prevResults) => ({
-      ...prevResults,
-      content: prevResults.content.map((post) =>
-        post.id === postId ? { ...post, totalComments: post.totalComments + 1 } : post
-      ),
-    }));
   };
 
   const handleDeletePost = async (postId) => {

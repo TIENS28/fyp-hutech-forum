@@ -27,6 +27,7 @@ function PersonalPage({ closeComment }) {
   const [openComment, setOpenComment] = useState(null);
   const [openModal, setOpenModal] = useState(false);
   const [userPosts, setUserPosts] = useState([]);
+  const token = localStorage.getItem('token');
 
   const handleClick = () => {
     setIsLiked(!isLiked);
@@ -43,16 +44,16 @@ function PersonalPage({ closeComment }) {
   }, [openModal]);
 
 
-  const handleCommentClose = (postId) => {
-    setOpenComment(null);
+  // const handleCommentClose = (postId) => {
+  //   setOpenComment(null);
     
-    // Update the totalComments for the currend post
-    setUserPosts((prevPosts) =>
-      prevPosts.map((post) =>
-        post.id === postId ? { ...post, totalComments: post.totalComments + 1 } : post
-      )
-    );
-  };
+  //   // Update the totalComments for the currend post
+  //   setUserPosts((prevPosts) =>
+  //     prevPosts.map((post) =>
+  //       post.id === postId ? { ...post, totalComments: post.totalComments + 1 } : post
+  //     )
+  //   );
+  // };
 
   useEffect(() => {
     if (openComment) {
@@ -86,7 +87,6 @@ function PersonalPage({ closeComment }) {
                 throw new Error("Failed to fetch user posts");
             }
             const data = await response.json();
-            console.log("User Posts Data:", data);
             setUserPosts(data);
         } catch (error) {
             console.error("Error fetching user posts", error);
@@ -98,7 +98,6 @@ function PersonalPage({ closeComment }) {
   // delete post api
   const handleDeletePost = async (postId) => {
     try {
-      const token = localStorage.getItem('token');
       const response = await fetch(`http://localhost:5001/api/auth/posts/deletePost/${postId}`, {
         method: 'DELETE',
         headers: {
@@ -118,16 +117,41 @@ function PersonalPage({ closeComment }) {
     }
   };
 
+  const handleCommentClose = async (postId) => {
+    try {
+      const response = await fetch(`http://localhost:5001/api/auth/posts/post/${postId}`, {
+        method: "GET",
+        headers: {
+          'Authorization': `Bearer ${token}`,
+        },
+      });
+  
+      if (response.ok) {
+        const updatedPost = await response.json();
+        setUserPosts((prevPosts) =>
+          prevPosts.map((post) =>
+            post.id === postId ? { ...post, totalComments: updatedPost.totalComments } : post
+          )
+        );
+      } else {
+        console.error('Failed to fetch updated post data:', response.statusText);
+      }
+    } catch (error) {
+      console.error('Error fetching updated post data:', error);
+    }
+  
+    setOpenComment(null);
+  };
   return (
     <>
     <Header />
     {openModal && <EditPost closeModal={setOpenModal}/>}
     {openComment !== null && (
-        <Comment
-        closeComment={() => handleCommentClose(openComment.id)}          
-        postInfo={openComment}
-        />
-      )}
+          <Comment
+            closeComment={() => handleCommentClose(openComment.id)}
+            postInfo={openComment}
+          />
+    )}
     <div className="personal-flex-container">
         <div className='personal-post'>
             <div className='create-post'>

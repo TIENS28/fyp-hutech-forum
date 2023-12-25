@@ -10,6 +10,8 @@ import { IoMdArrowRoundBack } from 'react-icons/io';
 function UpdateProfile() {
   const { user, setUserData } = useUser();
   const navigate = useNavigate();
+  const token = localStorage.getItem('token');
+
   const [updatedUser, setUpdatedUser] = useState({
     id: user.id,
     firstName: user.firstName,
@@ -39,16 +41,21 @@ function UpdateProfile() {
       formData.append('DOB', updatedUser.dob);
       formData.append('department', updatedUser.department);
       formData.append('studentID', updatedUser.studentID);
-      formData.append('avatar', updatedUser.avatar);
+  
+      if (updatedUser.avatar) {
+        formData.append('avatar', updatedUser.avatar);
+      }
   
       const response = await fetch('http://localhost:5001/api/auth/users/updateProfile', {
         method: 'PUT',
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
         body: formData,
       });
   
       if (response.ok) {
         const updatedUserData = await response.json();
-        // Use setUserData from useUser context to update the user data
         setUserData(updatedUserData);
         navigate('/personal', { replace: true });
       } else {
@@ -58,8 +65,6 @@ function UpdateProfile() {
       console.error('Error updating user profile:', error);
     }
   };
-  
-  
   
   const handleEditField = (field) => {
     setEditFields((prevFields) => ({
@@ -88,13 +93,13 @@ function UpdateProfile() {
             <div className='setting-information'>
               {editFields.avatarUrl ? (
                 <input
-                  type='file'
-                  onChange={(e) => setUpdatedUser({ ...updatedUser, avatar: e.target.files[0] })}
-                />
+                type='file'
+                onChange={(e) => setUpdatedUser({ ...updatedUser, avatar: e.target.files[0] || null})}
+              />
               ) : (
                 <p className='setting-texts'>{user.avatarUrl}</p>
               )}
-              <span className='setting-edit' onClick={() => handleEditField('avatarUrl' || " ")}>
+              <span className='setting-edit' onClick={() => handleEditField(" ")}>
                 <MdEdit />
               </span>
             </div>

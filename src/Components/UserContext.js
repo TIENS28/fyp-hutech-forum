@@ -1,5 +1,3 @@
-
-
 import React, { createContext, useContext, useEffect, useState } from 'react';
 
 const UserContext = createContext();
@@ -20,7 +18,7 @@ export const UserProvider = ({ children }) => {
     return () => localStorage.removeItem('user');
   }, []);
 
-  const contextValue = { user, setUserData }; // Include setUserData in the context value
+  const contextValue = { user, setUserData };
 
   return (
     <UserContext.Provider value={contextValue}>

@@ -30,7 +30,6 @@ function App() {
           <Route
             path='/login' element={<Login />}
           />
-          <Route path='/forgotpassword' element={<ForgotPassword />} />
           <Route path='/createaccount' element={<CreateAccount />} />
           <Route path='/homepage' element={<Homepage setIsNavbarVisible={setIsNavbarVisible} />} />
           <Route path='/create' element={<CreatePost />} />
