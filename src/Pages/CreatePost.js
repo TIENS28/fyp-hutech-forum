@@ -10,11 +10,11 @@ function CreatePost() {
   const [title, setTitle] = useState('');
   const [Description, setDescription] = useState('');
   const [content, setContent] = useState('');
-  const [thumbnail, setThumbnail] = useState(null); // New state for avatar file
+  const [thumbnail, setThumbnail] = useState(null); 
   const [error, setError] = useState(null);
   const { user } = useUser();
   const navigate = useNavigate();
-  const [thumbnailPreview, setThumbnailPreview] = useState(null); // New state for image preview
+  const [thumbnailPreview, setThumbnailPreview] = useState(null); 
 
   const handleChange = (event, editor) => {
     const data = editor.getData();
