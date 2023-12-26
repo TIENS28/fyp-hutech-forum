@@ -70,7 +70,7 @@ function CreatePost() {
         <div className="create-post-section">
           <label className="create-post-label">Title:</label>
           <input
-            className="create-post-input"
+            className="input-create-post"
             type="text"
             value={title}
             onChange={(e) => setTitle(e.target.value)}
@@ -80,12 +80,11 @@ function CreatePost() {
         <div className="create-post-section">
           <label className="create-post-label">Description:</label>
           <input
-            className="create-post-input"
+            className="input-create-post"
             type="text"
             value={Description}
             onChange={(e) => setDescription(e.target.value)}
           />
-
         </div>
 
         <CKEditor

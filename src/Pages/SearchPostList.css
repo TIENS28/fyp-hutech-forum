@@ -7,6 +7,28 @@
     padding: 10px;
 }
 
+.number-interaction {
+    color: black;
+    font-size: 18px;
+}
+
+.number-interaction {
+    color: deeppink;
+    font-size: 18px;
+}
+
+.numbers-interaction {
+    font-size: 18px;
+    color: gray;
+    margin-left: 5px;
+}
+
+.numbers-comments-interaction {
+    color: gray;
+    font-size: 18px;
+    float: right;
+}
+
 .bt-search {
     display: inline-block;
     background: none;

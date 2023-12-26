@@ -7,6 +7,7 @@ import { MdEdit } from "react-icons/md";
 import { FaSignOutAlt }    from "react-icons/fa";
 import { MdDelete } from "react-icons/md";
 import { FaHome } from "react-icons/fa";
+import Header from '../Components/header'; 
 
 function Setting() {
     const { user } = useUser();
@@ -37,7 +38,8 @@ function Setting() {
     };
 
   return (
-    
+    <>
+    <Header />
     <div className='setting-flex-container'>
 
       <div className={toggle === 1 ? "show-settingss" : "settingss"}>
@@ -49,14 +51,6 @@ function Setting() {
             {/* <span className='setting-edit'><MdEdit /></span> */}
           </div>
             <hr className='setting-hr'/>
-
-            <p className='setting-text'>Password</p>
-            <div className='setting-information'>
-                <p className='setting-texts'>{user.password}</p>
-                {/* <span className='setting-edit'><MdEdit /></span> */}
-            </div>
-            <hr className='setting-hr'/>
-
             <div>
               <h2 className='setting-h2'>Profile <MdEdit className='icon-edit-profile' onClick={()=>{navigate('/update', {replace:true})}}/></h2>
               <div className='form-setting'>
@@ -116,6 +110,7 @@ function Setting() {
       </div>
 
     </div>
+    </>
   );
 }
 

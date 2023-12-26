@@ -13,12 +13,66 @@ function ASearchList({ setIsNavbarVisible }) {
   const location = useLocation();
   const pageNumber = parseInt(new URLSearchParams(location.search).get('page')) || 0;
   const searchQuery = new URLSearchParams(location.search).get('query');
-  const [likedStates, setLikedStates] = useState({});
   const { user } = useUser();
   const [openModal, setOpenModal] = useState(false);
   const [openComment, setOpenComment] = useState(null);
   const [searchResults, setSearchResults] = useState([]);
   const token = localStorage.getItem('token');
+
+  const [likedStates, setLikedStates] = useState(() => {
+    const storedLikedStates = localStorage.getItem('likedStates');
+    return storedLikedStates ? JSON.parse(storedLikedStates) : {};
+  });
+
+  useEffect(() => {
+    if (searchResults.length > 0) {
+      const initialLikedStates = searchResults.reduce((acc, post) => {
+        acc[post.id.toString()] = post.liked;
+        return acc;
+      }, {});
+      setLikedStates(initialLikedStates);
+    }
+  }, [searchResults]);
+
+  const handleLike = async (postId) => {
+    try {
+      const response = await fetch(`http://localhost:5001/api/auth/posts/like/${postId}/${user.id}`, {
+        method: 'POST',
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
+  
+      if (response.ok) {
+        setSearchResults((prevResults) => {
+          const updatedContent = prevResults.content.map((post) =>
+            post.id === postId
+              ? {
+                  ...post,
+                  totalLikes: post.liked ? post.totalLikes - 1 : post.totalLikes + 1,
+                  liked: !post.liked,
+                }
+              : post
+          );
+  
+          return {
+            ...prevResults,
+            content: updatedContent,
+          };
+        });
+  
+        setLikedStates((prevLikedStates) => ({
+          ...prevLikedStates,
+          [postId.toString()]: !prevLikedStates[postId.toString()],
+        }));
+      } else {
+        console.error('Failed to like post:', response.statusText);
+      }
+    } catch (error) {
+      console.error('Error liking post:', error);
+    }
+  };
+  
 
   useEffect(() => {
     setIsNavbarVisible(true);
@@ -37,12 +91,11 @@ function ASearchList({ setIsNavbarVisible }) {
   useEffect(() => {
     const fetchSearchResults = async () => {
       try {
-        const response = await fetch(`http://localhost:5001/api/auth/posts/searchPost/${searchQuery}?page=${pageNumber}`,
-        {
-          method: "GET",
+        const response = await fetch(`http://localhost:5001/api/auth/posts/searchPost/${searchQuery}?page=${pageNumber}`, {
+          method: 'GET',
           headers: {
-            'Authorization': `Bearer ${token}`,
-          }
+            Authorization: `Bearer ${token}`,
+          },
         });
         const data = await response.json();
         setSearchResults(data);
@@ -61,32 +114,36 @@ function ASearchList({ setIsNavbarVisible }) {
   const handleCommentClose = async (postId) => {
     try {
       const response = await fetch(`http://localhost:5001/api/auth/posts/post/${postId}`, {
-        method: "GET",
+        method: 'GET',
         headers: {
-          'Authorization': `Bearer ${token}`,
+          Authorization: `Bearer ${token}`,
         },
       });
-  
+
       if (response.ok) {
         const updatedPost = await response.json();
-        setSearchResults((prevPosts) =>
-          prevPosts.map((post) =>
-            post.id === postId ? { ...post, totalComments: updatedPost.totalComments } : post
-          )
-        );
-      } else {
-        console.error('Failed to fetch updated post data:', response.statusText);
+        setSearchResults((prevResults) => {
+          const updatedContent = prevResults.content.map((post) =>
+            post.id === postId
+              ? { ...post, totalComments: updatedPost.totalComments }
+              : post
+          );
+
+          return {
+            ...prevResults,
+            content: updatedContent,
+          };
+        });
       }
     } catch (error) {
       console.error('Error fetching updated post data:', error);
     }
-  
+
     setOpenComment(null);
   };
 
   const handleDeletePost = async (postId) => {
     try {
-      const token = localStorage.getItem('token');
       const response = await fetch(`http://localhost:5001/api/auth/posts/deletePost/${postId}`, {
         method: 'DELETE',
         headers: {
@@ -96,9 +153,9 @@ function ASearchList({ setIsNavbarVisible }) {
 
       if (response.ok) {
         setSearchResults((prevResults) => ({
-            ...prevResults,
-            content: prevResults.content.filter((post) => post.id !== postId),
-          }));
+          ...prevResults,
+          content: prevResults.content.filter((post) => post.id !== postId),
+        }));
         console.log('Post deleted successfully');
       } else {
         console.error('Error deleting post:', response.statusText);
@@ -113,8 +170,8 @@ function ASearchList({ setIsNavbarVisible }) {
       {openModal && <EditPost closeModal={() => setOpenModal(false)} />}
       {openComment !== null && (
         <Comment
-        closeComment={() => handleCommentClose(openComment.id)}          
-        postInfo={openComment}
+          closeComment={() => handleCommentClose(openComment.id)}
+          postInfo={openComment}
         />
       )}
       <div className="home-flex-container">
@@ -123,12 +180,12 @@ function ASearchList({ setIsNavbarVisible }) {
             <div key={post.id} className="flex-container-home-user">
               <div className="editor-content">
                 <div className="user-home-user">
-                    <button
-                        className="delete-post-btn"
-                        onClick={() => handleDeletePost(post.id)}
-                        >
-                        Delete Post
-                    </button>
+                  <button
+                    className="delete-post-btn"
+                    onClick={() => handleDeletePost(post.id)}
+                  >
+                    Delete Post
+                  </button>
                   <span className="user-date">At: {new Date(post.createdDate).toLocaleDateString()}</span>
                   <span className="user-date">{post.user.fullName}</span>
                 </div>
@@ -146,7 +203,7 @@ function ASearchList({ setIsNavbarVisible }) {
                   />
                 )}
                 <div className="home-interactions">
-                  <AiFillHeart className="number-interaction" />
+                  <AiFillHeart className="number-interaction" />{post.totalLikes}
                   <span className="numbers-comments-interaction">{post.totalComments} Comments</span>
                 </div>
                 <div>
@@ -155,7 +212,7 @@ function ASearchList({ setIsNavbarVisible }) {
                 <div className="interaction">
                   <FaHeart
                     className="FaHeart"
-                    onClick={() => handleClick(post.id.toString())}
+                    onClick={() => handleLike(post.id)}
                     style={{ color: likedStates[post.id.toString()] ? 'DeepPink' : 'Black' }}
                   />
                   <FaRegComments
@@ -170,7 +227,8 @@ function ASearchList({ setIsNavbarVisible }) {
         </div>
 
         <div className="pagination-controls">
-          <button className='bt-search'
+          <button
+            className='bt-search'
             disabled={searchResults?.number === 0}
             onClick={() => {
               navigate(`/admin/search?page=${searchResults?.number - 1}&query=${searchQuery}`);
@@ -180,7 +238,8 @@ function ASearchList({ setIsNavbarVisible }) {
           <span>
             Page {searchResults?.number + 1} of {searchResults?.totalPages}
           </span>
-          <button className='bt-search'
+          <button
+            className='bt-search'
             disabled={searchResults?.number === searchResults?.totalPages - 1}
             onClick={() => {
               navigate(`/admin/search?page=${searchResults?.number + 1}&query=${searchQuery}`);

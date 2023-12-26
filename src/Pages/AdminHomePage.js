@@ -3,7 +3,6 @@ import React, { useState, useEffect } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom'
 import { useUser } from '../Components/UserContext';
 import './Homepage.css';
-import Header from '../Components/header'; 
 import { FaPlus } from "react-icons/fa";
 import { IoSettingsSharp } from "react-icons/io5";
 import { FaRegComments }   from "react-icons/fa";
@@ -16,14 +15,56 @@ import Comment from '../Components/Comment';
 function AdminHomePage({ setIsNavbarVisible }) {
   const { user } = useUser();
   const navigate = useNavigate();
-  const location = useLocation();
-  const { editorData, uploadedImage } = location.state || {};
-  const [likedStates, setLikedStates] = useState({});
   const [isLiked, setIsLiked] = useState(false);
   const [allPosts, setAllPosts] = useState([]);
   const [openComment, setOpenComment] = useState(null);
   const [openModal, setOpenModal] = useState(false);
   const token = localStorage.getItem('token');
+
+  const [likedStates, setLikedStates] = useState(() => {
+    const storedLikedStates = localStorage.getItem('likedStates');
+    return storedLikedStates ? JSON.parse(storedLikedStates) : {};
+  });
+
+  useEffect(() => {
+    if (allPosts.length > 0) {
+      const initialLikedStates = allPosts.reduce((acc, post) => {
+        acc[post.id.toString()] = post.liked;
+        return acc;
+      }, {});
+      setLikedStates(initialLikedStates);
+    }
+  }, [allPosts]);
+
+  const handleLike = async (postId) => {
+    try {
+      const response = await fetch(`http://localhost:5001/api/auth/posts/like/${postId}/${user.id}`, {
+        method: 'POST',
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
+
+      if (response.ok) {
+        setAllPosts((prevPosts) =>
+          prevPosts.map((post) =>
+            post.id === postId
+              ? {
+                  ...post,
+                  totalLikes: post.liked ? post.totalLikes - 1 : post.totalLikes + 1,
+                  liked: !post.liked,
+                }
+              : post
+          )
+        );
+      } else {
+        console.error('Failed to like post:', response.statusText);
+      }
+    } catch (error) {
+      console.error('Error', error);
+    }
+  };
+
 
   useEffect(() => {
     setIsNavbarVisible(true);
@@ -51,29 +92,29 @@ function AdminHomePage({ setIsNavbarVisible }) {
   const handleCommentClose = async (postId) => {
     try {
       const response = await fetch(`http://localhost:5001/api/auth/posts/post/${postId}`, {
-        method: "GET",
+        method: 'GET',
         headers: {
-          'Authorization': `Bearer ${token}`,
+          Authorization: `Bearer ${token}`,
         },
       });
-  
+
       if (response.ok) {
         const updatedPost = await response.json();
         setAllPosts((prevPosts) =>
           prevPosts.map((post) =>
-            post.id === postId ? { ...post, totalComments: updatedPost.totalComments } : post
+            post.id === postId ? { ...post, 
+              totalComments: updatedPost.totalComments,
+              totalLikes: updatedPost.totalLikes
+            } : post
           )
         );
-      } else {
-        console.error('Failed to fetch updated post data:', response.statusText);
       }
     } catch (error) {
       console.error('Error fetching updated post data:', error);
     }
-  
+
     setOpenComment(null);
   };
-  
 
   useEffect(() => {
     if (openComment) {
@@ -185,23 +226,22 @@ function AdminHomePage({ setIsNavbarVisible }) {
                     {post.content && <p dangerouslySetInnerHTML={renderContent(post.content)}></p>}
                     {post.thumbnailUrl && <img src={post.thumbnailUrl} alt="Post Thumbnail" style={{ width: '600px', height: '400px' }} />}
                     <div className='home-interactions'>
-                        <AiFillHeart className='number-interaction' />
+                        <AiFillHeart className='number-interaction' />{post.totalLikes}
                         <span className='numbers-comments-interaction'>{post.totalComments} Comments</span>
-
                     </div>
                     <div>
                         <hr className='home-hr' />
                     </div>
                     <div className="interaction">
                         <FaHeart
-                        className="FaHeart"
-                        onClick={() => handleClick(post.id.toString())}
-                        style={{ color: likedStates[post.id.toString()] ? 'DeepPink' : 'Black' }}
+                          className="FaHeart"
+                          onClick={() => handleLike(post.id)}
+                          style={{ color: likedStates[post.id.toString()] ? 'DeepPink' : 'Black' }}
                         />
                         <FaRegComments
                             className="FaRegComments"
                             onClick={() => setOpenComment(post)}
-                            />
+                        />
                         
                         <FaRegStar className="FaRegStar" />
                         

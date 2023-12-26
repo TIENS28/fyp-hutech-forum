@@ -11,16 +11,18 @@ function UpdateProfile() {
   const { user, setUserData } = useUser();
   const navigate = useNavigate();
   const token = localStorage.getItem('token');
+  console.log(user);
 
   const [updatedUser, setUpdatedUser] = useState({
     id: user.id,
     firstName: user.firstName,
     lastName: user.lastName,
     email: user.email,
-    DOB: user.dob,
+    dob: user.dob,
     department: user.department,
     studentID: user.studentID,
     avatarUrl: user.avatarUrl,
+    avatar: user.avatar,
   });
   const [editFields, setEditFields] = useState({
     firstName: false,
@@ -29,6 +31,7 @@ function UpdateProfile() {
     department: false,
     DOB: false,
     studentID: false,
+    avatar: false,
   });
 
   const handleUpdateProfile = async () => {
@@ -56,8 +59,12 @@ function UpdateProfile() {
   
       if (response.ok) {
         const updatedUserData = await response.json();
-        setUserData(updatedUserData);
-        navigate('/personal', { replace: true });
+        setUserData(updatedUserData);      
+        if (updatedUserData.role.roleCode === 'ADMIN') {
+          navigate('/admin/home', { replace: true });
+        } else {
+          navigate('/personal', { replace: true });
+        }
       } else {
         console.error('Failed to update user profile');
       }
@@ -82,7 +89,7 @@ function UpdateProfile() {
       });
     }
   };
-
+  
   return (
     <>
       <div className='setting-flex-container'>
@@ -91,15 +98,16 @@ function UpdateProfile() {
           <div className='form-setting'>
             <p className='setting-text'>Avatar</p>
             <div className='setting-information'>
-              {editFields.avatarUrl ? (
+              {editFields.avatar ? (
                 <input
                 type='file'
-                onChange={(e) => setUpdatedUser({ ...updatedUser, avatar: e.target.files[0] || null})}
+                value={updatedUser.avatar || ''}
+                onChange={(e) => setUpdatedUser({ ...updatedUser, avatar: e.target.files[0]})}
               />
               ) : (
                 <p className='setting-texts'>{user.avatarUrl}</p>
               )}
-              <span className='setting-edit' onClick={() => handleEditField(" ")}>
+              <span className='setting-edit' onClick={() => handleEditField('avatar')}>
                 <MdEdit />
               </span>
             </div>
@@ -110,7 +118,7 @@ function UpdateProfile() {
               {editFields.firstName ? (
                 <input
                   type='text'
-                  value={updatedUser.firstName || ''}
+                  value={updatedUser.firstName}
                   onChange={(e) => setUpdatedUser({ ...updatedUser, firstName: e.target.value })}
                 />
               ) : (
@@ -127,7 +135,7 @@ function UpdateProfile() {
               {editFields.lastName ? (
                 <input
                   type='text'
-                  value={updatedUser.lastName || ''}
+                  value={updatedUser.lastName}
                   onChange={(e) => setUpdatedUser({ ...updatedUser, lastName: e.target.value })}
                 />
               ) : (
@@ -144,7 +152,7 @@ function UpdateProfile() {
               {editFields.department ? (
                 <input
                   type='text'
-                  value={updatedUser.department || ''}
+                  value={updatedUser.department}
                   onChange={(e) => setUpdatedUser({ ...updatedUser, department: e.target.value })}
                 />
               ) : (
@@ -157,21 +165,22 @@ function UpdateProfile() {
             <hr className='setting-hr' />
 
             <p className='setting-text'>DOB</p>
-            <div className='setting-information'>
-              {editFields.DOB ? (
-                <input
-                  type='text'
-                  value={updatedUser.DOB || ''}
-                  onChange={(e) => setUpdatedUser({ ...updatedUser, DOB: e.target.value })}
-                />
-              ) : (
-                <p className='setting-texts'>{user.DOB}</p>
-              )}
-              <span className='setting-edit' onClick={() => handleEditField('DOB')}>
-                <MdEdit />
-              </span>
-            </div>
-            <hr className='setting-hr' />
+              <div className='setting-information'>
+                {editFields.DOB ? (
+                  <input
+                    type='text'
+                    value={updatedUser.dob}
+                    onChange={(e) => setUpdatedUser({ ...updatedUser, dob: e.target.value })}
+                  />
+                ) : (
+                  <p className='setting-texts'>{user.dob}</p>
+                )}
+                <span className='setting-edit' onClick={() => handleEditField('DOB')}>
+                  <MdEdit />
+                </span>
+              </div>
+              <hr className='setting-hr' />
+
 
             <p className='setting-text'>Student ID</p>
             <div className='setting-information'>
@@ -184,7 +193,7 @@ function UpdateProfile() {
               ) : (
                 <p className='setting-texts'>{user.studentID}</p>
               )}
-              <span className='setting-edit' onClick={() => handleEditField('studentID')}>
+              <span className='setting-edit' onClick={() => handleEditField('studentID' || ' ')}>
                 <MdEdit />
               </span>
             </div>

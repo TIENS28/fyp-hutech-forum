@@ -8,6 +8,31 @@
     margin-top: 70px;
 }
 
+.ck-editor {
+    width: 70%; /* Adjust the width as needed */
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    margin: 10px auto; /* Center the editor on the page */
+    padding: 10px;
+  }
+
+.ck.ck-editor__editable {
+    min-height: 150px;
+    width: 100%; /* Make the content area width 100% */
+    border: 1px solid #ccc;
+    border-radius: 0px;
+    padding: 0px;
+  }
+  
+.input-create-post {
+    border: 2px solid #F1F1F1;
+    border-radius: 10px;
+    width: 95%;
+    padding: 10px;
+    margin: 10px auto;
+    font-size: 18px;
+}
+
 .post-flex-container > * {
     width: 100%;
     height: auto;

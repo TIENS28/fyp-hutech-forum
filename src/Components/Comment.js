@@ -17,7 +17,6 @@ function Comment({ closeComment, postInfo }) {
   const [commentText, setCommentText] = useState('');
   const [comments, setComments] = useState([]);
 
-
   const fetchComments = async () => {
     try {
       const response = await fetch(`http://localhost:5001/api/auth/posts/${postInfo.id}/comments`);
@@ -41,9 +40,10 @@ function Comment({ closeComment, postInfo }) {
           content: commentText,
         }),
       });
-  
+
       if (response.ok) {
-        postInfo.totalComments += 1;  
+        
+        postInfo.totalComments += 1;
         fetchComments();
         console.log('Comment submitted successfully');
         
@@ -60,7 +60,6 @@ function Comment({ closeComment, postInfo }) {
     fetchComments();
   }, [postInfo.id]);
 
-
   return (
     <div className='modalComment'>
       <div className='modalCommentContent'>
@@ -68,8 +67,10 @@ function Comment({ closeComment, postInfo }) {
           <div className='comment-user'>
             <h2>{postInfo.user.fullName} post </h2>
           </div>
-          <div className='comment-cancel' 
-            onClick={() => closeComment(false)}>
+          <div
+            className='comment-cancel' 
+            onClick={() => closeComment(false)}
+          >
             X
           </div>
         </div>
@@ -85,7 +86,7 @@ function Comment({ closeComment, postInfo }) {
                     navigate('/personal', { replace: true });
                   }}
                   className='homepage-personal-page'
-                  src='Yone.jpg'
+                  src='user.avatarUrl'
                   alt='Avatar'
                 />
               </div>
@@ -118,12 +119,15 @@ function Comment({ closeComment, postInfo }) {
                 <div className='comments-section'>
                   <h3>Comments</h3>
                   <div className='comment-input-area'>
-                    <textarea className='textarea-input-comment'
+                    <textarea
+                      className='textarea-input-comment'
                       placeholder='Write a comment...'
                       value={commentText}
                       onChange={(e) => setCommentText(e.target.value)}
                     />
-                    <button className='bt-submit-comment'onClick={handleCommentSubmit}>Submit Comment</button>
+                    <button className='bt-submit-comment' onClick={handleCommentSubmit}>
+                      Submit Comment
+                    </button>
                   </div>
                   <ul>
                     {comments.map((comment) => (

@@ -21,6 +21,7 @@ function Dropdown() {
     } else {
       navigate('/personal', { replace: true });
     }
+    setOpen(false);
   };
 
   return (
@@ -30,7 +31,7 @@ function Dropdown() {
         <img className='img-username'
                   src={user.avatarUrl} 
                   alt="Avatar"
-                />
+        />
       </div>
 
       <div className={`dropdown-menu ${open ? 'active' : 'inactive'}`}>
