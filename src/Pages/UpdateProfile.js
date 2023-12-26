@@ -99,11 +99,12 @@ function UpdateProfile() {
             <p className='setting-text'>Avatar</p>
             <div className='setting-information'>
               {editFields.avatar ? (
-                <input
+              
+              <input
                 type='file'
-                value={updatedUser.avatar || ''}
-                onChange={(e) => setUpdatedUser({ ...updatedUser, avatar: e.target.files[0]})}
+                onChange={(e) => setUpdatedUser({ ...updatedUser, avatar: e.target.files[0] })}
               />
+              
               ) : (
                 <p className='setting-texts'>{user.avatarUrl}</p>
               )}

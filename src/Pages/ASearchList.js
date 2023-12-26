@@ -199,7 +199,7 @@ function ASearchList({ setIsNavbarVisible }) {
                   <img
                     src={post.thumbnailUrl}
                     alt="Post Thumbnail"
-                    style={{ width: '600px', height: '400px' }}
+                  
                   />
                 )}
                 <div className="home-interactions">

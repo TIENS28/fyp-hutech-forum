@@ -129,7 +129,7 @@ function Comment({ closeComment, postInfo }) {
                       Submit Comment
                     </button>
                   </div>
-                  <ul>
+                  <ul style={{margin: '20px'}}>
                     {comments.map((comment) => (
                       <li key={comment.id}>
                         <strong>{comment.user && comment.user.fullName}</strong>:

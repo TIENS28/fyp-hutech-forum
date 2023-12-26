@@ -39,7 +39,9 @@ function CreatePost() {
       formData.append('title', title);
       formData.append('Description', Description);
       formData.append('content', content);
-      formData.append('thumbnail', thumbnail);
+      if (thumbnail !== null) {
+        formData.append('thumbnail', thumbnail);
+      }
       const token = localStorage.getItem('token');
       try{
         const response = await fetch('http://localhost:5001/api/auth/posts/newPost', {

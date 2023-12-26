@@ -203,8 +203,10 @@ function Homepage({ setIsNavbarVisible }) {
                       </span>
                       <span className="user-date">{post.user.fullName}</span>
                     </div>
-                    <h1>{post.title}</h1>
-                    {post.description && <p>{post.description}</p>}
+                    <div>
+                    <h1 className='post-title'>{post.title}</h1>
+                    {post.description && <p className='post-description'>{post.description}</p>}
+                    </div>
                     {post.content && (
                       <p dangerouslySetInnerHTML={renderContent(post.content)}></p>
                     )}
@@ -212,7 +214,7 @@ function Homepage({ setIsNavbarVisible }) {
                       <img
                         src={post.thumbnailUrl}
                         alt="Post Thumbnail"
-                        style={{ width: '600px', height: '400px' }}
+                        style={{ width: '580px', height: '400px' }}
                       />
                     )}
                     <div className="home-interactions">
@@ -236,7 +238,9 @@ function Homepage({ setIsNavbarVisible }) {
                         onClick={() => setOpenComment(post)}
                       />
                       <FaRegStar className="FaRegStar" />
+                      
                     </div>
+                  
                   </div>
                 </div>
               ))}

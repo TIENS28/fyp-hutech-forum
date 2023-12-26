@@ -221,10 +221,10 @@ function AdminHomePage({ setIsNavbarVisible }) {
                     <span className='user-date'>At: {new Date(post.createdDate).toLocaleDateString()}</span>
                     <span className='user-date'>{post.user.fullName}</span>
                     </div>
-                    <h1>{post.title}</h1>
-                    {post.description && <p>{post.description}</p>}
+                    <h1 className='post-title'>{post.title}</h1>
+                    {post.description && <p className='post-description'>{post.description}</p>}
                     {post.content && <p dangerouslySetInnerHTML={renderContent(post.content)}></p>}
-                    {post.thumbnailUrl && <img src={post.thumbnailUrl} alt="Post Thumbnail" style={{ width: '600px', height: '400px' }} />}
+                    {post.thumbnailUrl && <img src={post.thumbnailUrl} alt="Post Thumbnail" />}
                     <div className='home-interactions'>
                         <AiFillHeart className='number-interaction' />{post.totalLikes}
                         <span className='numbers-comments-interaction'>{post.totalComments} Comments</span>

@@ -11,6 +11,7 @@
 .home-flex-container > div {
     background-color: #FFF;
     border-radius: 10px;
+    border: 2px solid black;
     width: 600px;
     height: auto;
     margin: 10px;
@@ -57,12 +58,24 @@
 
 .flex-container-home-user {
     display: flex;
-    /* justify-content: space-between; Thêm dòng này để đẩy các phần tử về hai bên */
     align-items: center;
+    width: 100%;
+    border-top: 5px solid black;
+    border-right: 2px solid black;
+    border-bottom: 2px solid black;
+    border-left: 2px solid black;
+    margin-bottom: 20px;
+    margin-top: 20px;
+
 }
 
+img{
+    height: 400px;
+    width: 580px;
+}
 .flex-container-home-user > div {
     margin: 10px;
+    width: 100%;
 }
 
 .home-user {
@@ -189,4 +202,17 @@
 
 .editor-content {
     background-color: #FFF;
+}
+
+.post-title-description{
+    border: 1px solid blue;
+}
+
+.post-title{
+    font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+    
+}
+
+.post-description{
+    font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
 }

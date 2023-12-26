@@ -61,18 +61,22 @@
 .comment-input-area {
     display: flex;
     flex-direction: column;
+    width: 100%;
 }
 
 .textarea-input-comment {
     height: auto;
     min-height: 70px;
     margin-bottom: 10px;
+    width: 100%;
+    font-family: Arial, Helvetica, sans-serif;
 }
 
 .bt-submit-comment {
     border: none;
     border-radius: 50px;
-    float: right;
+    margin-left: 33%;
+    margin-right: 33%;    
     width: 200px;
     font-size: 1rem;
     padding: 5px;
@@ -84,3 +88,4 @@
 .bt-submit-comment:hover {
     cursor: pointer;
 }
+
